@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop Laptops & 2-in-1s | Lenovo US — Variant A (Sidebar Filter)</title>
+  <meta name="description" content="Find top laptops or 2-in-1s for work, school, gaming & more. FREE SHIPPING on orders $50+." />
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Variant A indicator (for A/B tracking) -->
+  <meta name="ab-variant" content="A-sidebar-filter" />
+</head>
+<body>
+
+<!-- ── Top Banner ──────────────────────────────────────────── -->
+<div class="top-banner">
+  <span>🚚 Free Standard Shipping on orders $50+</span>
+  <span>🎓 <a href="#">Student &amp; Teacher Discounts</a></span>
+  <span>📞 1-855-2-LENOVO</span>
+</div>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">LENO<span>V</span>O</a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="laptops.html" class="active">Laptops &amp; 2-in-1s</a>
+      <a href="#">Desktops</a>
+      <a href="#">Tablets</a>
+      <a href="#">Monitors</a>
+      <a href="#">Gaming</a>
+      <a href="#">Deals</a>
+      <a href="compare.html" style="color:var(--blue);font-weight:700">⊕ Compare</a>
+    </nav>
+
+    <div class="header-right">
+      <div id="search-box">
+        <input type="text" placeholder="Search laptops…" aria-label="Search" />
+        <button aria-label="Submit search">🔍</button>
+      </div>
+      <button class="icon-btn" id="search-toggle" aria-label="Toggle search">🔍</button>
+      <button class="icon-btn" aria-label="Account">👤</button>
+      <a href="cart.html" class="icon-btn" aria-label="Cart" style="position:relative;text-decoration:none">
+        🛒 <span class="cart-count" id="cart-count">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ── Breadcrumb ───────────────────────────────────────────── -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="container">
+    <ol>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html">PCs &amp; Laptops</a></li>
+      <li aria-current="page">Laptops &amp; 2-in-1s</li>
+    </ol>
+  </div>
+</nav>
+
+<!-- ── Page Hero ────────────────────────────────────────────── -->
+<div class="page-hero">
+  <div class="container">
+    <h1>Shop Laptops &amp; 2-in-1s</h1>
+    <p>Find top laptops or 2-in-1s for work, school, gaming &amp; more</p>
+    <div class="hero-meta">
+      <span class="badge-pill">✓ Free Shipping</span>
+      <span class="badge-pill">✓ 30-Day Returns</span>
+      <span class="badge-pill">✓ Price Match Guarantee</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Main Content ─────────────────────────────────────────── -->
+<main>
+  <div class="container">
+    <div class="results-layout">
+
+      <!-- ════════════════════════════════════════════════════
+           VARIANT A KEY FEATURE: LEFT SIDEBAR FILTERS
+           ════════════════════════════════════════════════════ -->
+      <aside class="sidebar" aria-label="Filter products">
+
+        <div class="sidebar-header">
+          <span>🔧 Filter</span>
+          <button id="clear-all-btn" disabled>Clear All</button>
+        </div>
+
+        <!-- Price Range -->
+        <div class="price-filter-box">
+          <label>Price Range</label>
+          <div class="price-inputs">
+            <input type="range" id="price-min" min="0" max="2000" step="50" value="0" aria-label="Minimum price" />
+          </div>
+          <div class="price-inputs" style="margin-top:6px">
+            <input type="range" id="price-max" min="0" max="2000" step="50" value="2000" aria-label="Maximum price" />
+          </div>
+          <div class="price-labels">
+            <span id="price-min-lbl">$0</span>
+            <span id="price-max-lbl">$2,000</span>
+          </div>
+        </div>
+
+        <!-- Series -->
+        <div class="filter-group">
+          <div class="filter-group-header" role="button" tabindex="0" aria-expanded="true">
+            Series <div class="arrow open"></div>
+          </div>
+          <div class="filter-group-body">
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="series" value="ThinkPad" />
+              ThinkPad <small style="color:#999;margin-left:auto">(3)</small>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="series" value="IdeaPad" />
+              IdeaPad <small style="color:#999;margin-left:auto">(3)</small>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="series" value="Legion" />
+              Legion <small style="color:#999;margin-left:auto">(2)</small>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="series" value="Yoga" />
+              Yoga <small style="color:#999;margin-left:auto">(3)</small>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="series" value="ThinkBook" />
+              ThinkBook <small style="color:#999;margin-left:auto">(1)</small>
+            </label>
+          </div>
+        </div>
+
+        <!-- Type -->
+        <div class="filter-group">
+          <div class="filter-group-header" role="button" tabindex="0" aria-expanded="true">
+            Type <div class="arrow open"></div>
+          </div>
+          <div class="filter-group-body">
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="type" value="Ultrabook" />
+              Ultrabook
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="type" value="Everyday" />
+              Everyday
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="type" value="Gaming" />
+              Gaming
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="type" value="Business" />
+              Business
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="type" value="2-in-1" />
+              2-in-1
+            </label>
+          </div>
+        </div>
+
+        <!-- Processor -->
+        <div class="filter-group">
+          <div class="filter-group-header" role="button" tabindex="0" aria-expanded="true">
+            Processor Brand <div class="arrow open"></div>
+          </div>
+          <div class="filter-group-body">
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="processorBrand" value="Intel" />
+              Intel <small style="color:#999;margin-left:auto">(8)</small>
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="processorBrand" value="AMD" />
+              AMD <small style="color:#999;margin-left:auto">(6)</small>
+            </label>
+          </div>
+        </div>
+
+        <!-- RAM -->
+        <div class="filter-group">
+          <div class="filter-group-header" role="button" tabindex="0" aria-expanded="true">
+            RAM <div class="arrow open"></div>
+          </div>
+          <div class="filter-group-body">
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="ram" value="8" />
+              8GB
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="ram" value="16" />
+              16GB
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="ram" value="32" />
+              32GB
+            </label>
+          </div>
+        </div>
+
+        <!-- Storage -->
+        <div class="filter-group">
+          <div class="filter-group-header" role="button" tabindex="0" aria-expanded="true">
+            Storage <div class="arrow open"></div>
+          </div>
+          <div class="filter-group-body">
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="storage" value="256GB SSD" />
+              256GB SSD
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="storage" value="512GB SSD" />
+              512GB SSD
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="storage" value="1TB SSD" />
+              1TB SSD
+            </label>
+          </div>
+        </div>
+
+        <!-- Screen Size -->
+        <div class="filter-group">
+          <div class="filter-group-header" role="button" tabindex="0" aria-expanded="true">
+            Screen Size <div class="arrow open"></div>
+          </div>
+          <div class="filter-group-body">
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="screen" value="13.3" />
+              13.3"
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="screen" value="14" />
+              14"
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="screen" value="15.6" />
+              15.6"
+            </label>
+            <label class="filter-option">
+              <input type="checkbox" class="filter-checkbox" data-group="screen" value="16" />
+              16"
+            </label>
+          </div>
+        </div>
+
+      </aside>
+      <!-- END SIDEBAR ──────────────────────────────────────── -->
+
+      <!-- Results Panel -->
+      <div class="results-panel">
+
+        <!-- Topbar: count + sort -->
+        <div class="results-topbar">
+          <p class="results-count-text">
+            Showing <strong id="results-count">12</strong> laptops
+          </p>
+          <div class="sort-wrapper">
+            <label for="sort-select">Sort by:</label>
+            <select id="sort-select" aria-label="Sort results">
+              <option value="relevance">Relevance</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Customer Rating</option>
+              <option value="savings">Biggest Savings</option>
+              <option value="newest">Newest First</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Active filter tags -->
+        <div id="active-filters" role="list" aria-label="Active filters"></div>
+
+        <!-- Product Grid -->
+        <div class="products-grid" id="products-grid" aria-label="Laptop results">
+          <!-- Rendered by main.js -->
+        </div>
+
+      </div><!-- /results-panel -->
+    </div><!-- /results-layout -->
+  </div><!-- /container -->
+</main>
+
+<!-- ── Footer ───────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">LENO<span style="color:#E1251B">V</span>O</div>
+        <p>Smarter technology for all. Laptops, PCs, tablets, and smart devices designed for everyone.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="laptops.html">Laptops &amp; 2-in-1s</a></li>
+          <li><a href="#">Desktops &amp; AiOs</a></li>
+          <li><a href="#">Tablets &amp; Pads</a></li>
+          <li><a href="#">Monitors</a></li>
+          <li><a href="#">Accessories</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Driver Downloads</a></li>
+          <li><a href="#">Warranty Lookup</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Lenovo</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Newsroom</a></li>
+          <li><a href="#">Sustainability</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Lenovo. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

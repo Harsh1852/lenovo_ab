@@ -1,0 +1,13 @@
+{
+  "name": "lenovo-ab-test",
+  "version": "1.0.0",
+  "description": "Lenovo clone A/B test – Variant A (Sidebar Filter) vs Variant B (Top Bar Filter)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:3001": "PORT=3001 node server.js"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Detail | Lenovo US — Variant B</title>
+  <meta name="ab-variant" content="B-topbar-filter" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Product Detail Page ─────────────────────────────── */
+    .pdp-wrap { max-width: 1280px; margin: 0 auto; padding: 24px; }
+
+    /* Hero */
+    .pdp-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+    @media (max-width: 900px) { .pdp-hero { grid-template-columns: 1fr; gap: 24px; } }
+
+    /* Gallery */
+    .pdp-gallery { position: sticky; top: 90px; }
+    .pdp-main-img {
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+    }
+    .pdp-main-img svg { width: 85%; height: 85%; }
+    .pdp-thumbs { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pdp-thumb {
+      width: 72px; height: 54px; border-radius: 8px; border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: border-color .15s; overflow: hidden;
+    }
+    .pdp-thumb.active { border-color: var(--blue); }
+    .pdp-thumb svg { width: 90%; height: 90%; }
+    .view-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--blue); margin-top: 8px;
+      border: 1px solid var(--blue); border-radius: 4px; padding: 4px 10px;
+    }
+
+    /* Right panel */
+    .pdp-info {}
+    .pdp-series-tag {
+      display: inline-block;
+      font-size: 11px; font-weight: 700; letter-spacing: .08em;
+      padding: 3px 10px; border-radius: 4px; color: #fff; margin-bottom: 10px;
+    }
+    .pdp-title { font-size: 26px; font-weight: 700; line-height: 1.25; margin-bottom: 8px; }
+    .pdp-sku { font-size: 12px; color: var(--text-soft); margin-bottom: 14px; }
+    .pdp-rating-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .pdp-rating-row .stars { color: #f5a623; font-size: 18px; }
+    .pdp-rating-row .rating-val { font-weight: 700; }
+    .pdp-rating-row .review-count { color: var(--blue); font-size: 13px; text-decoration: underline; cursor: pointer; }
+
+    .pdp-badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .pdp-badge {
+      font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px;
+      background: var(--blue); color: #fff;
+    }
+    .pdp-badge.red { background: var(--red); }
+    .pdp-badge.green { background: var(--green); color: #fff; }
+    .pdp-badge.outline { background: transparent; border: 1px solid var(--blue); color: var(--blue); }
+
+    .pdp-price-block { margin-bottom: 20px; padding: 16px; background: var(--bg); border-radius: 8px; }
+    .pdp-price-current { font-size: 32px; font-weight: 900; color: var(--text); }
+    .pdp-price-original { font-size: 16px; color: var(--text-soft); text-decoration: line-through; margin-left: 10px; }
+    .pdp-price-save {
+      display: inline-block; margin-top: 4px;
+      background: #fff3cd; color: #856404; border: 1px solid #ffc107;
+      font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 4px;
+    }
+    .pdp-ecoupon {
+      margin-top: 10px; font-size: 13px; color: var(--green);
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .pdp-key-specs { margin-bottom: 20px; }
+    .pdp-key-specs h4 { font-size: 13px; font-weight: 700; color: var(--text-soft); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+    .pdp-spec-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pdp-spec-pill {
+      display: flex; align-items: center; gap: 6px;
+      background: #fff; border: 1px solid var(--border); border-radius: 20px;
+      padding: 6px 14px; font-size: 13px; font-weight: 500;
+    }
+    .pdp-spec-pill .icon { font-size: 15px; }
+
+    .pdp-actions { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+    .pdp-actions .btn { flex: 1; min-width: 160px; padding: 14px 20px; font-size: 15px; font-weight: 700; border-radius: 6px; }
+    .btn-wishlist {
+      border: 2px solid var(--border); border-radius: 6px;
+      padding: 14px 18px; font-size: 18px; background: #fff; transition: border-color .15s;
+    }
+    .btn-wishlist:hover { border-color: var(--red); color: var(--red); }
+
+    .pdp-shipping {
+      font-size: 13px; background: #fff; border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px; margin-bottom: 16px;
+    }
+    .pdp-shipping .ship-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .pdp-shipping .ship-row:last-child { margin-bottom: 0; }
+    .pdp-shipping .ship-icon { font-size: 16px; }
+    .pdp-shipping .ship-label { font-weight: 600; color: var(--green); }
+
+    .pdp-guarantee { display: flex; gap: 16px; font-size: 12px; color: var(--text-soft); flex-wrap: wrap; margin-bottom: 20px; }
+    .pdp-guarantee span { display: flex; align-items: center; gap: 4px; }
+
+    .pdp-financing {
+      background: var(--blue-light); border-radius: 8px; padding: 12px 16px;
+      font-size: 13px; color: var(--blue); font-weight: 500;
+    }
+
+    /* Tabs */
+    .pdp-tabs { margin-bottom: 48px; }
+    .tab-nav { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 28px; gap: 0; }
+    .tab-btn {
+      padding: 12px 24px; font-size: 15px; font-weight: 600; color: var(--text-soft);
+      border-bottom: 3px solid transparent; margin-bottom: -2px;
+      transition: color .15s, border-color .15s; background: none; border-radius: 0;
+    }
+    .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+    .tab-btn:hover { color: var(--blue); }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* Overview tab */
+    .overview-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px;
+    }
+    @media (max-width: 700px) { .overview-grid { grid-template-columns: 1fr; } }
+    .overview-feature {
+      background: var(--bg); border-radius: 10px; padding: 20px;
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .overview-feature .feat-icon { font-size: 28px; flex-shrink: 0; }
+    .overview-feature h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .overview-feature p { font-size: 13px; color: var(--text-mid); line-height: 1.5; }
+
+    .in-box h3 { font-size: 18px; font-weight: 700; margin-bottom: 14px; }
+    .in-box ul { display: flex; gap: 12px; flex-wrap: wrap; }
+    .in-box li {
+      background: #fff; border: 1px solid var(--border); border-radius: 8px;
+      padding: 10px 18px; font-size: 13px; display: flex; align-items: center; gap: 8px;
+    }
+
+    /* Specs tab */
+    .specs-table { width: 100%; border-collapse: collapse; }
+    .specs-table th {
+      background: var(--blue); color: #fff; text-align: left;
+      padding: 12px 16px; font-size: 14px; font-weight: 700;
+    }
+    .specs-table td {
+      padding: 11px 16px; border-bottom: 1px solid var(--border); font-size: 14px;
+      vertical-align: top;
+    }
+    .specs-table tr:nth-child(even) td { background: var(--bg); }
+    .specs-table td:first-child { font-weight: 600; color: var(--text-mid); width: 220px; }
+    .specs-section-head td {
+      background: var(--blue-dark) !important; color: #fff;
+      font-weight: 700 !important; font-size: 13px; text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    /* Reviews tab */
+    .reviews-summary { display: flex; gap: 32px; margin-bottom: 28px; align-items: flex-start; flex-wrap: wrap; }
+    .reviews-score { text-align: center; }
+    .reviews-score .big-num { font-size: 56px; font-weight: 900; line-height: 1; color: var(--blue); }
+    .reviews-score .out-of { font-size: 13px; color: var(--text-soft); }
+    .reviews-score .stars { font-size: 22px; color: #f5a623; }
+    .reviews-bars { flex: 1; }
+    .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; font-size: 13px; }
+    .bar-row .label { width: 50px; text-align: right; color: var(--text-mid); }
+    .bar-track { flex: 1; height: 8px; background: var(--border); border-radius: 4px; }
+    .bar-fill { height: 100%; border-radius: 4px; background: #f5a623; }
+    .bar-count { width: 30px; color: var(--text-soft); }
+
+    .review-list { display: flex; flex-direction: column; gap: 20px; }
+    .review-card { background: var(--bg); border-radius: 10px; padding: 20px; }
+    .review-card .rev-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+    .review-card .rev-name { font-weight: 700; font-size: 14px; }
+    .review-card .rev-date { font-size: 12px; color: var(--text-soft); }
+    .review-card .rev-stars { color: #f5a623; font-size: 14px; margin-bottom: 6px; }
+    .review-card .rev-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+    .review-card .rev-body { font-size: 14px; color: var(--text-mid); line-height: 1.55; }
+    .review-card .rev-verified { font-size: 11px; color: var(--green); margin-top: 8px; }
+
+    /* Related products */
+    .related-section { margin-bottom: 48px; }
+    .related-section h2 { font-size: 22px; font-weight: 700; margin-bottom: 20px; }
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) { .related-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 560px) { .related-grid { grid-template-columns: 1fr; } }
+
+    /* Breadcrumb product name truncate */
+    .breadcrumb-product { max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* Loading / not found */
+    .pdp-not-found { text-align: center; padding: 80px 20px; }
+    .pdp-not-found h2 { font-size: 24px; margin-bottom: 12px; }
+    .pdp-not-found p { color: var(--text-soft); margin-bottom: 24px; }
+
+    /* ── Variant B: Sticky bottom compare bar ──────────────── */
+    .pdp-cmp-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 500;
+      background: var(--blue-dark); color: #fff;
+      box-shadow: 0 -4px 24px rgba(0,0,0,.28);
+      border-top: 3px solid var(--blue);
+    }
+    .pdp-cmp-bar-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 24px; flex-wrap: wrap;
+    }
+
+    /* Left: icon + label */
+    .pdp-cmp-bar-label {
+      display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+    }
+    .pdp-cmp-bar-label-text {
+      font-size: 13px; font-weight: 700; white-space: nowrap;
+    }
+    .pdp-cmp-bar-label-count {
+      font-size: 11px; font-weight: 700;
+      background: rgba(255,255,255,.18); border-radius: 10px; padding: 2px 9px;
+    }
+
+    /* Middle: chips */
+    .pdp-cmp-bar-chips {
+      flex: 1; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      min-width: 0;
+    }
+    .pdp-cmp-bar-empty-hint {
+      font-size: 12px; color: rgba(255,255,255,.45); font-style: italic;
+    }
+    .pdp-cmp-bar-chip {
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2);
+      border-radius: 20px; padding: 4px 12px;
+      font-size: 12px; font-weight: 500; white-space: nowrap;
+      max-width: 200px; overflow: hidden; text-overflow: ellipsis;
+    }
+    .pdp-cmp-bar-chip.current-chip {
+      background: rgba(255,255,255,.25); border-color: rgba(255,255,255,.5);
+      font-weight: 700;
+    }
+
+    /* Right: actions */
+    .pdp-cmp-bar-actions {
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+    }
+    .pdp-cmp-bar-toggle {
+      padding: 9px 16px; border-radius: 6px; font-size: 13px; font-weight: 700;
+      border: 2px solid rgba(255,255,255,.4); color: #fff; background: transparent;
+      cursor: pointer; transition: background .15s, border-color .15s; white-space: nowrap;
+    }
+    .pdp-cmp-bar-toggle:hover:not(:disabled) {
+      background: rgba(255,255,255,.12); border-color: #fff;
+    }
+    .pdp-cmp-bar-toggle.cmp-active {
+      background: var(--green); border-color: var(--green); color: #fff;
+    }
+    .pdp-cmp-bar-toggle:disabled { opacity: .4; cursor: not-allowed; }
+    .pdp-cmp-bar-view {
+      padding: 9px 20px; border-radius: 6px; font-size: 13px; font-weight: 700;
+      background: #fff; color: var(--blue); text-decoration: none; white-space: nowrap;
+      transition: background .15s, opacity .15s;
+    }
+    .pdp-cmp-bar-view:hover { background: #e8f0fc; }
+    .pdp-cmp-bar-view.disabled {
+      background: rgba(255,255,255,.15); color: rgba(255,255,255,.35);
+      pointer-events: none;
+    }
+    .pdp-cmp-bar-clear {
+      padding: 9px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;
+      border: 1px solid rgba(255,255,255,.25); color: rgba(255,255,255,.6);
+      background: transparent; cursor: pointer; transition: color .15s, border-color .15s;
+    }
+    .pdp-cmp-bar-clear:hover { color: #fff; border-color: #fff; }
+    .pdp-cmp-bar-clear:disabled { opacity: .3; cursor: not-allowed; }
+
+    /* Push page content up so bar doesn't cover footer */
+    body { padding-bottom: 64px; }
+  </style>
+</head>
+<body>
+
+<!-- ── Top Banner ──────────────────────────────────────────── -->
+<div class="top-banner">
+  <span>🚚 Free Standard Shipping on orders $50+</span>
+  <span>🎓 <a href="#">Student &amp; Teacher Discounts</a></span>
+  <span>📞 1-855-2-LENOVO</span>
+</div>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">LENO<span>V</span>O</a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="laptops.html" class="active">Laptops &amp; 2-in-1s</a>
+      <a href="#">Desktops</a>
+      <a href="#">Tablets</a>
+      <a href="#">Monitors</a>
+      <a href="#">Gaming</a>
+      <a href="#">Deals</a>
+      <a href="compare.html" style="color:var(--blue);font-weight:700">⊕ Compare</a>
+    </nav>
+    <div class="header-right">
+      <div id="search-box">
+        <input type="text" placeholder="Search laptops…" aria-label="Search" />
+        <button aria-label="Submit search">🔍</button>
+      </div>
+      <button class="icon-btn" id="search-toggle" aria-label="Toggle search">🔍</button>
+      <button class="icon-btn" aria-label="Account">👤</button>
+      <a href="cart.html" class="icon-btn" aria-label="Cart" style="position:relative;text-decoration:none">
+        🛒 <span class="cart-count" id="cart-count">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ── Breadcrumb (populated by JS) ────────────────────────── -->
+<nav class="breadcrumb" aria-label="Breadcrumb" id="breadcrumb-nav">
+  <div class="container">
+    <ol>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="laptops.html">Laptops &amp; 2-in-1s</a></li>
+      <li aria-current="page" id="breadcrumb-product" class="breadcrumb-product">Loading…</li>
+    </ol>
+  </div>
+</nav>
+
+<!-- ── Page Content ──────────────────────────────────────────── -->
+<main id="pdp-main">
+  <div class="pdp-wrap" id="pdp-content">
+    <!-- Rendered by JS -->
+    <div style="text-align:center;padding:80px 20px;color:var(--text-soft)">Loading product…</div>
+  </div>
+</main>
+
+<!-- ── Footer ───────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">LENO<span style="color:#E1251B">V</span>O</div>
+        <p>Smarter technology for all. Laptops, PCs, tablets, and smart devices designed for everyone.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="laptops.html">Laptops &amp; 2-in-1s</a></li>
+          <li><a href="#">Desktops &amp; AiOs</a></li>
+          <li><a href="#">Tablets &amp; Pads</a></li>
+          <li><a href="#">Monitors</a></li>
+          <li><a href="#">Accessories</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Driver Downloads</a></li>
+          <li><a href="#">Warranty Lookup</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Lenovo</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Newsroom</a></li>
+          <li><a href="#">Sustainability</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Lenovo. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Product Database (extended) ──────────────────────────────
+const PRODUCTS = [
+  {
+    id: 1, name: "ThinkPad X1 Carbon Gen 12",
+    series: "ThinkPad", type: "Ultrabook",
+    processor: "Intel Core Ultra 7 155H", processorBrand: "Intel",
+    ram: 16, storage: "512GB SSD", screen: 14.0,
+    price: 1499, origPrice: 1899, savings: 400,
+    rating: 4.8, reviews: 245, badge: "Best Seller", color: "Black",
+    cardBg: "#1a2340", cardAccent: "#294E95",
+    sku: "21HF0036US",
+    display: "14\" 2.8K OLED, 400 nits, 100% DCI-P3",
+    graphics: "Intel Arc Graphics",
+    battery: "Up to 15 hours",
+    weight: "2.48 lbs (1.12 kg)",
+    os: "Windows 11 Pro",
+    ports: "2× Thunderbolt 4, 2× USB-A 3.2, HDMI 2.1, headphone jack",
+    wireless: "Wi-Fi 6E, Bluetooth 5.3",
+    webcam: "1080p FHD with IR, ThinkShutter privacy cover",
+    keyboard: "Backlit, spill-resistant, TrackPoint",
+    fingerprint: "Yes, with IR camera",
+    military: "MIL-STD-810H certified",
+    features: [
+      { icon: "🔋", title: "All-Day Battery", desc: "Up to 15 hours of real-world usage. Rapid Charge gives you 80% in 60 minutes." },
+      { icon: "⚡", title: "Intel Core Ultra 7", desc: "AI-powered performance with Intel's 14th-gen architecture for demanding workloads." },
+      { icon: "🎨", title: "2.8K OLED Display", desc: "Stunning clarity with 100% DCI-P3 color gamut and factory-calibrated accuracy." },
+      { icon: "🛡️", title: "Military Grade", desc: "MIL-STD-810H tested for drops, dust, humidity, and extreme temperatures." },
+      { icon: "🔒", title: "Enterprise Security", desc: "TPM 2.0, IR camera, fingerprint reader, and ThinkShutter webcam cover." },
+      { icon: "⚖️", title: "Ultra-Light", desc: "At just 2.48 lbs, one of the lightest 14\" business laptops available." }
+    ],
+    reviews_data: [
+      { name: "Michael T.", date: "Jan 2024", rating: 5, title: "Best ThinkPad I've ever owned", body: "The OLED screen is absolutely gorgeous and the battery life is incredible for a 14\" business laptop. Keyboard feel is the best I've used in years.", verified: true },
+      { name: "Sarah K.", date: "Dec 2023", rating: 5, title: "Perfect travel companion", body: "Lightweight, fast, and the build quality is exceptional. The TrackPoint still works great for precision work. Worth every penny.", verified: true },
+      { name: "James R.", date: "Nov 2023", rating: 4, title: "Great laptop, minor quibbles", body: "Excellent performance and display. Docked a star because the fan can get audible under heavy load. Otherwise near-perfect.", verified: false }
+    ]
+  },
+  {
+    id: 2, name: "IdeaPad Slim 5 Gen 9",
+    series: "IdeaPad", type: "Everyday",
+    processor: "AMD Ryzen 5 7530U", processorBrand: "AMD",
+    ram: 8, storage: "256GB SSD", screen: 15.6,
+    price: 549, origPrice: 699, savings: 150,
+    rating: 4.5, reviews: 312, badge: "", color: "Arctic Grey",
+    cardBg: "#1e3a5f", cardAccent: "#4a90d9",
+    sku: "82XQ0012US",
+    display: "15.6\" FHD IPS, 300 nits, 45% NTSC",
+    graphics: "AMD Radeon Graphics",
+    battery: "Up to 10 hours",
+    weight: "3.86 lbs (1.75 kg)",
+    os: "Windows 11 Home",
+    ports: "2× USB-A 3.2, 1× USB-C 3.2, HDMI 1.4, SD card reader, headphone jack",
+    wireless: "Wi-Fi 6, Bluetooth 5.1",
+    webcam: "720p HD",
+    keyboard: "Backlit, full-size with numeric keypad",
+    fingerprint: "Yes",
+    military: "N/A",
+    features: [
+      { icon: "💰", title: "Great Value", desc: "Powerful AMD Ryzen performance at an unbeatable price for everyday computing needs." },
+      { icon: "🖥️", title: "15.6\" FHD Display", desc: "Large screen perfect for productivity, streaming, and multitasking with comfortable viewing." },
+      { icon: "🔢", title: "Full Numeric Keypad", desc: "Built-in numeric keypad makes data entry and calculations effortless." },
+      { icon: "🔋", title: "All-Day Battery", desc: "Up to 10 hours of battery life to keep you productive through the whole day." },
+      { icon: "🎓", title: "Perfect for Students", desc: "Lightweight enough to carry to campus with enough power for coursework and media." },
+      { icon: "🔒", title: "Fingerprint Reader", desc: "Quick and secure login with the built-in fingerprint reader." }
+    ],
+    reviews_data: [
+      { name: "Alex P.", date: "Feb 2024", rating: 5, title: "Incredible value laptop", body: "For the price this laptop is absolutely phenomenal. Fast, good battery life, comfortable keyboard. Perfect for college.", verified: true },
+      { name: "Linda M.", date: "Jan 2024", rating: 4, title: "Solid everyday laptop", body: "Good performance for browsing, Office apps, and video calls. The screen could be brighter but overall a great purchase.", verified: true },
+      { name: "Tom W.", date: "Dec 2023", rating: 4, title: "Happy with my purchase", body: "Runs smoothly, setup was easy. The AMD processor handles multitasking well. Wish the storage was 512GB but it does the job.", verified: false }
+    ]
+  },
+  {
+    id: 3, name: "Legion 5 Pro Gen 8",
+    series: "Legion", type: "Gaming",
+    processor: "AMD Ryzen 7 7745HX", processorBrand: "AMD",
+    ram: 16, storage: "1TB SSD", screen: 16.0,
+    price: 1299, origPrice: 1499, savings: 200,
+    rating: 4.7, reviews: 189, badge: "Gaming Pick", color: "Onyx Grey",
+    cardBg: "#1a0a2e", cardAccent: "#7c3aed",
+    sku: "82WK0001US",
+    display: "16\" QHD+ IPS 165Hz, 500 nits, 100% sRGB",
+    graphics: "NVIDIA GeForce RTX 4060 8GB",
+    battery: "Up to 6 hours (gaming: ~2.5 hours)",
+    weight: "5.4 lbs (2.45 kg)",
+    os: "Windows 11 Home",
+    ports: "1× USB-C (Thunderbolt 4), 3× USB-A 3.2, HDMI 2.1, SD card reader, headphone jack",
+    wireless: "Wi-Fi 6E, Bluetooth 5.3",
+    webcam: "1080p FHD",
+    keyboard: "RGB per-key backlit, anti-ghosting, 4-zone lighting",
+    fingerprint: "No",
+    military: "N/A",
+    features: [
+      { icon: "🎮", title: "RTX 4060 GPU", desc: "NVIDIA GeForce RTX 4060 with 8GB GDDR6 delivers smooth gameplay at 1440p in top titles." },
+      { icon: "🖥️", title: "QHD+ 165Hz Display", desc: "16\" QHD+ display at 165Hz ensures buttery-smooth visuals for competitive gaming." },
+      { icon: "❄️", title: "Legion Coldfront 5.0", desc: "Dual-fan cooling system with vapor chamber keeps temperatures optimal under load." },
+      { icon: "⌨️", title: "RGB Per-Key Keyboard", desc: "Customize every key with individual RGB lighting and macro programming." },
+      { icon: "🔊", title: "Nahimic Audio", desc: "Immersive 3D audio for a competitive edge and cinematic soundscapes." },
+      { icon: "⚡", title: "Rapid Charge", desc: "Charge to 50% in just 30 minutes with the included 230W power adapter." }
+    ],
+    reviews_data: [
+      { name: "GamePro2024", date: "Mar 2024", rating: 5, title: "Best mid-range gaming laptop", body: "Runs every game I throw at it at ultra settings 1080p or high at 1440p. The 165Hz screen is a game changer. Temps stay reasonable with the Coldfront cooling.", verified: true },
+      { name: "Derek N.", date: "Feb 2024", rating: 5, title: "Exceeded expectations", body: "Coming from a 2019 gaming desktop, this thing is fast. RTX 4060 handles everything. The keyboard RGB is awesome.", verified: true },
+      { name: "Casey L.", date: "Jan 2024", rating: 4, title: "Great but runs hot", body: "Performance is stellar. Does run warm under sustained load but the cooling keeps it stable. Speakers are average but everything else is great.", verified: false }
+    ]
+  },
+  {
+    id: 4, name: "Yoga 9i Gen 9",
+    series: "Yoga", type: "2-in-1",
+    processor: "Intel Core Ultra 7 165H", processorBrand: "Intel",
+    ram: 16, storage: "1TB SSD", screen: 14.0,
+    price: 1199, origPrice: 1599, savings: 400,
+    rating: 4.9, reviews: 156, badge: "Editor's Choice", color: "Oatmeal",
+    cardBg: "#3d2b1f", cardAccent: "#c9881a",
+    sku: "83AC0076US",
+    display: "14\" 2.8K OLED Touch, 400 nits, 100% DCI-P3",
+    graphics: "Intel Arc Graphics",
+    battery: "Up to 13 hours",
+    weight: "3.09 lbs (1.4 kg)",
+    os: "Windows 11 Home",
+    ports: "2× Thunderbolt 4, 1× USB-A 3.2, HDMI 2.1, headphone jack",
+    wireless: "Wi-Fi 6E, Bluetooth 5.3",
+    webcam: "1080p FHD with IR",
+    keyboard: "Backlit, Bluetooth-enabled stylus included",
+    fingerprint: "Yes, with IR camera",
+    military: "N/A",
+    features: [
+      { icon: "🔄", title: "360° 2-in-1 Design", desc: "Flip, fold, or tent — use as a laptop, tablet, stand, or tent mode for any task." },
+      { icon: "✏️", title: "Stylus Included", desc: "Lenovo Precision Pen 3 included for natural inking, sketching, and note-taking." },
+      { icon: "🎨", title: "OLED Touchscreen", desc: "Stunning 2.8K OLED display with touch support and 100% DCI-P3 wide color gamut." },
+      { icon: "🔊", title: "Bowers & Wilkins Audio", desc: "Premium quad-speaker system tuned by Bowers & Wilkins for concert-quality sound." },
+      { icon: "🤖", title: "AI-Powered", desc: "Intel Core Ultra 7 with NPU for AI acceleration — smarter performance all around." },
+      { icon: "🎓", title: "Editor's Choice", desc: "Awarded best 2-in-1 laptop of 2024 by multiple major tech publications." }
+    ],
+    reviews_data: [
+      { name: "Priya S.", date: "Feb 2024", rating: 5, title: "The perfect premium 2-in-1", body: "OLED screen is jaw-dropping. The Bowers & Wilkins speakers are genuinely impressive. Stylus feels natural. Battery easily lasts my full workday.", verified: true },
+      { name: "Marco V.", date: "Jan 2024", rating: 5, title: "Worth every cent", body: "Replaced my iPad Pro + laptop combo with this. Does both jobs perfectly. Build quality is exceptional — feels like a premium product.", verified: true },
+      { name: "Anna K.", date: "Dec 2023", rating: 5, title: "Stunning device", body: "The OLED display is the best I've seen on a laptop. 2-in-1 hinge is solid. Great for creative work and presentations.", verified: true }
+    ]
+  },
+  {
+    id: 5, name: "ThinkBook 14 Gen 6",
+    series: "ThinkBook", type: "Business",
+    processor: "Intel Core i5-1335U", processorBrand: "Intel",
+    ram: 8, storage: "256GB SSD", screen: 14.0,
+    price: 799, origPrice: 999, savings: 200,
+    rating: 4.4, reviews: 98, badge: "", color: "Arctic Grey",
+    cardBg: "#1a3050", cardAccent: "#3a7bd5",
+    sku: "21DH0076US",
+    display: "14\" FHD IPS, 300 nits, 45% NTSC",
+    graphics: "Intel Iris Xe Graphics",
+    battery: "Up to 12 hours",
+    weight: "3.20 lbs (1.45 kg)",
+    os: "Windows 11 Pro",
+    ports: "2× USB-C (Thunderbolt 4), 2× USB-A 3.2, HDMI 2.0, SD card reader, headphone jack",
+    wireless: "Wi-Fi 6, Bluetooth 5.2",
+    webcam: "1080p FHD",
+    keyboard: "Backlit, spill-resistant",
+    fingerprint: "Yes",
+    military: "N/A",
+    features: [
+      { icon: "💼", title: "Business Ready", desc: "Windows 11 Pro with enterprise security features and remote management capabilities." },
+      { icon: "🔋", title: "Long Battery Life", desc: "Up to 12 hours of battery life for full work days without searching for an outlet." },
+      { icon: "🖥️", title: "Dual Thunderbolt 4", desc: "Connect to external monitors, docks, and fast storage simultaneously." },
+      { icon: "🔒", title: "Secure Fingerprint", desc: "Windows Hello fingerprint reader for fast, secure passwordless login." },
+      { icon: "📸", title: "1080p Webcam", desc: "Sharp 1080p camera ensures professional appearance in video calls." },
+      { icon: "💰", title: "Business Value", desc: "Pro-grade features at a mid-range price — ideal for SMBs and startups." }
+    ],
+    reviews_data: [
+      { name: "Brian H.", date: "Jan 2024", rating: 4, title: "Solid business laptop", body: "Great build quality for the price. The Thunderbolt 4 ports are super useful for my dock setup. Battery life is genuinely impressive.", verified: true },
+      { name: "Nancy P.", date: "Dec 2023", rating: 5, title: "Exceeded my expectations", body: "Upgraded from a 5-year old machine and the difference is night and day. Fast, reliable, and the display is crisp.", verified: true },
+      { name: "Steve M.", date: "Nov 2023", rating: 4, title: "Good value for business use", body: "Screen brightness could be a bit higher for outdoor use but otherwise excellent. Windows 11 Pro is a nice bonus.", verified: false }
+    ]
+  },
+  {
+    id: 6, name: "IdeaPad Gaming 3 Gen 8",
+    series: "IdeaPad", type: "Gaming",
+    processor: "Intel Core i7-13620H", processorBrand: "Intel",
+    ram: 16, storage: "512GB SSD", screen: 15.6,
+    price: 799, origPrice: 1099, savings: 300,
+    rating: 4.6, reviews: 203, badge: "Value Pick", color: "Onyx Grey",
+    cardBg: "#0f1a2e", cardAccent: "#e1251b",
+    sku: "82SA00LGUS",
+    display: "15.6\" FHD IPS 144Hz, 250 nits, 45% NTSC",
+    graphics: "NVIDIA GeForce RTX 3050 4GB",
+    battery: "Up to 7 hours (gaming: ~2 hours)",
+    weight: "5.07 lbs (2.3 kg)",
+    os: "Windows 11 Home",
+    ports: "1× USB-C 3.2, 2× USB-A 3.2, 1× USB-A 2.0, HDMI 1.4, RJ-45, headphone jack",
+    wireless: "Wi-Fi 6, Bluetooth 5.1",
+    webcam: "720p HD",
+    keyboard: "Backlit (white), anti-ghosting",
+    fingerprint: "No",
+    military: "N/A",
+    features: [
+      { icon: "🎮", title: "RTX 3050 GPU", desc: "NVIDIA GeForce RTX 3050 enables ray tracing and DLSS for smooth gaming at 1080p." },
+      { icon: "🖥️", title: "144Hz Display", desc: "Smooth 144Hz refresh rate ensures fluid gameplay for competitive titles." },
+      { icon: "💰", title: "Best Value Gaming", desc: "Get genuine gaming performance at an entry-level price — the best bang for your buck." },
+      { icon: "🌐", title: "Wired Ethernet", desc: "Built-in RJ-45 port for lag-free wired gaming sessions when Wi-Fi won't cut it." },
+      { icon: "⌨️", title: "Anti-Ghosting Keyboard", desc: "N-key rollover prevents missed inputs during fast-paced gaming sessions." },
+      { icon: "🔊", title: "Stereo Speakers", desc: "Dual front-facing speakers deliver clear game audio and chat." }
+    ],
+    reviews_data: [
+      { name: "Josh L.", date: "Mar 2024", rating: 5, title: "Best budget gaming laptop", body: "RTX 3050 runs everything I play. Fortnite, Valorant, GTA V all run great. 144Hz makes a huge difference. Can't beat this price.", verified: true },
+      { name: "Mia T.", date: "Feb 2024", rating: 5, title: "Surprised by the performance", body: "Wasn't expecting much at this price but this laptop runs games better than my old desktop. The 144Hz screen is super smooth.", verified: true },
+      { name: "Ryan C.", date: "Jan 2024", rating: 4, title: "Good starter gaming laptop", body: "Great for the price. Runs warm but stays stable. Screen is good. Would upgrade the RAM eventually but plenty for now.", verified: false }
+    ]
+  },
+  {
+    id: 7, name: "ThinkPad E14 Gen 5",
+    series: "ThinkPad", type: "Business",
+    processor: "Intel Core i7-1355U", processorBrand: "Intel",
+    ram: 16, storage: "512GB SSD", screen: 14.0,
+    price: 899, origPrice: 1099, savings: 200,
+    rating: 4.5, reviews: 134, badge: "", color: "Graphite Black",
+    cardBg: "#141c2b", cardAccent: "#294E95",
+    sku: "21HD0054US",
+    display: "14\" FHD IPS, 300 nits, 45% NTSC",
+    graphics: "Intel Iris Xe Graphics",
+    battery: "Up to 11 hours",
+    weight: "3.20 lbs (1.45 kg)",
+    os: "Windows 11 Pro",
+    ports: "2× USB-C (Thunderbolt 4), 2× USB-A 3.2, HDMI 2.0, headphone jack",
+    wireless: "Wi-Fi 6E, Bluetooth 5.3",
+    webcam: "1080p FHD with IR",
+    keyboard: "Backlit, spill-resistant, TrackPoint",
+    fingerprint: "Yes, with IR camera",
+    military: "MIL-STD-810H certified",
+    features: [
+      { icon: "💼", title: "Professional ThinkPad", desc: "Enterprise-grade security, durability, and performance in a sleek business package." },
+      { icon: "🛡️", title: "MIL-STD-810H Certified", desc: "Built to survive real-world conditions — drops, dust, humidity, and temperature extremes." },
+      { icon: "⌨️", title: "Iconic TrackPoint", desc: "Precision pointing without leaving the keyboard — the preferred input for ThinkPad loyalists." },
+      { icon: "🔒", title: "Dual Authentication", desc: "IR camera and fingerprint reader provide multi-layered Windows Hello security." },
+      { icon: "🔋", title: "11-Hour Battery", desc: "Get through a full work day plus commute on a single charge." },
+      { icon: "📶", title: "Wi-Fi 6E Ready", desc: "Latest wireless standard for faster speeds and less congestion in crowded networks." }
+    ],
+    reviews_data: [
+      { name: "David K.", date: "Feb 2024", rating: 5, title: "Reliable ThinkPad quality", body: "Rock-solid build. The TrackPoint is as good as ever. Fast startup with Windows 11 Pro. A great mid-range business laptop.", verified: true },
+      { name: "Helen S.", date: "Jan 2024", rating: 4, title: "Good but display average", body: "Keyboard and trackpad are excellent. Battery life is solid. Screen is functional but not stunning — fine for Office work.", verified: true },
+      { name: "Kevin B.", date: "Dec 2023", rating: 5, title: "Replaced my aging ThinkPad X1", body: "Huge performance jump. The Intel 13th gen handles everything I throw at it. Build quality is exactly what I expect from ThinkPad.", verified: false }
+    ]
+  },
+  {
+    id: 8, name: "Yoga 7i Gen 9 2-in-1",
+    series: "Yoga", type: "2-in-1",
+    processor: "Intel Core Ultra 5 125H", processorBrand: "Intel",
+    ram: 16, storage: "512GB SSD", screen: 16.0,
+    price: 999, origPrice: 1299, savings: 300,
+    rating: 4.7, reviews: 167, badge: "", color: "Storm Grey",
+    cardBg: "#2a3040", cardAccent: "#5b8dd9",
+    sku: "83DJCTO1WW",
+    display: "16\" 2.5K IPS Touch 120Hz, 350 nits, 100% sRGB",
+    graphics: "Intel Arc Graphics",
+    battery: "Up to 14 hours",
+    weight: "4.18 lbs (1.9 kg)",
+    os: "Windows 11 Home",
+    ports: "2× Thunderbolt 4, 1× USB-A 3.2, HDMI 2.0, SD card reader, headphone jack",
+    wireless: "Wi-Fi 6E, Bluetooth 5.3",
+    webcam: "1080p FHD with IR",
+    keyboard: "Backlit, optional stylus support",
+    fingerprint: "Yes, with IR camera",
+    military: "N/A",
+    features: [
+      { icon: "🔄", title: "360° Flexibility", desc: "Four usage modes — laptop, tablet, stand, and tent — for ultimate versatility." },
+      { icon: "🖥️", title: "16\" 2.5K Touch", desc: "Large 2.5K touchscreen with 120Hz refresh for smooth scrolling and creativity." },
+      { icon: "⚡", title: "Intel Core Ultra 5", desc: "AI-enhanced processing for faster, smarter performance on everyday and demanding tasks." },
+      { icon: "🔋", title: "14-Hour Battery", desc: "Exceptional battery life lets you work, create, and play all day without charging." },
+      { icon: "🎵", title: "Quad Speakers", desc: "Dolby Atmos-certified quad-speaker system for immersive audio in any mode." },
+      { icon: "📸", title: "1080p IR Webcam", desc: "Crystal-clear video calls with Windows Hello facial recognition login." }
+    ],
+    reviews_data: [
+      { name: "Lisa N.", date: "Mar 2024", rating: 5, title: "Best 16\" 2-in-1 available", body: "The screen size is perfect for creative work. 120Hz makes touch feel super responsive. Battery life blew me away — 14 hours is real.", verified: true },
+      { name: "Omar R.", date: "Feb 2024", rating: 4, title: "Great laptop, slightly heavy", body: "Excellent display and performance. Slightly heavier than I'd like for a 2-in-1 but the big screen makes it worth it.", verified: true },
+      { name: "Rachel T.", date: "Jan 2024", rating: 5, title: "Replaced my Surface Pro", body: "Better battery, better screen, better keyboard. The Intel Arc GPU handles light creative work too. Very happy.", verified: false }
+    ]
+  },
+  {
+    id: 9, name: "Legion Slim 5 Gen 8",
+    series: "Legion", type: "Gaming",
+    processor: "AMD Ryzen 7 7745HX", processorBrand: "AMD",
+    ram: 16, storage: "512GB SSD", screen: 15.6,
+    price: 1099, origPrice: 1399, savings: 300,
+    rating: 4.8, reviews: 221, badge: "", color: "Misty Grey",
+    cardBg: "#1a0f2e", cardAccent: "#9c4dcc",
+    sku: "82YA007KUS",
+    display: "15.6\" FHD IPS 144Hz, 350 nits, 100% sRGB",
+    graphics: "NVIDIA GeForce RTX 4060 8GB",
+    battery: "Up to 8 hours (gaming: ~2.5 hours)",
+    weight: "4.85 lbs (2.2 kg)",
+    os: "Windows 11 Home",
+    ports: "1× USB-C (Thunderbolt 4), 2× USB-A 3.2, HDMI 2.1, SD card reader, headphone jack",
+    wireless: "Wi-Fi 6E, Bluetooth 5.3",
+    webcam: "1080p FHD",
+    keyboard: "RGB 4-zone backlit, anti-ghosting",
+    fingerprint: "No",
+    military: "N/A",
+    features: [
+      { icon: "🎮", title: "RTX 4060 in Slim Body", desc: "Full RTX 4060 performance in one of the thinnest gaming laptop designs." },
+      { icon: "⚖️", title: "Thin & Light Gaming", desc: "At 4.85 lbs, travel with real gaming power without the bulk of traditional gaming laptops." },
+      { icon: "🖥️", title: "144Hz IPS Display", desc: "Smooth 144Hz FHD display ensures every frame is rendered perfectly." },
+      { icon: "❄️", title: "Legion Coldfront Cooling", desc: "Intelligent dual-fan cooling adapts to workload for optimal performance and low noise." },
+      { icon: "🔋", title: "Longer Gaming Battery", desc: "Up to 8 hours general use — more time away from the outlet for casual sessions." },
+      { icon: "🎨", title: "Premium Design", desc: "Misty Grey aluminum chassis gives a premium look that doesn't scream 'gaming laptop'." }
+    ],
+    reviews_data: [
+      { name: "Tyler B.", date: "Mar 2024", rating: 5, title: "Slim gaming done right", body: "Finally a gaming laptop I can bring to coffee shops without embarrassment. RTX 4060 is powerful and the slim design is amazing.", verified: true },
+      { name: "Kayla M.", date: "Feb 2024", rating: 5, title: "Best gaming laptop under $1200", body: "RTX 4060 obliterates everything at 1080p. The thin design is premium. Great screen. Incredible value.", verified: true },
+      { name: "Nathan H.", date: "Jan 2024", rating: 5, title: "Exceeded all expectations", body: "Runs cool and quiet for a gaming laptop. The 144Hz display is smooth. Build quality is excellent for the price point.", verified: false }
+    ]
+  },
+  {
+    id: 10, name: "IdeaPad Flex 5 Gen 8",
+    series: "IdeaPad", type: "2-in-1",
+    processor: "AMD Ryzen 5 7530U", processorBrand: "AMD",
+    ram: 8, storage: "256GB SSD", screen: 14.0,
+    price: 449, origPrice: 599, savings: 150,
+    rating: 4.3, reviews: 278, badge: "Budget Pick", color: "Abyss Blue",
+    cardBg: "#0f2040", cardAccent: "#1565c0",
+    sku: "82R9006WUS",
+    display: "14\" FHD IPS Touch, 250 nits, 45% NTSC",
+    graphics: "AMD Radeon Graphics",
+    battery: "Up to 10 hours",
+    weight: "3.64 lbs (1.65 kg)",
+    os: "Windows 11 Home",
+    ports: "1× USB-C 3.2, 2× USB-A 3.2, HDMI 1.4, SD card reader, headphone jack",
+    wireless: "Wi-Fi 5, Bluetooth 5.1",
+    webcam: "720p HD",
+    keyboard: "Backlit",
+    fingerprint: "Yes",
+    military: "N/A",
+    features: [
+      { icon: "💰", title: "Most Affordable 2-in-1", desc: "The best value 2-in-1 laptop for students and budget-conscious buyers." },
+      { icon: "🔄", title: "360° Touchscreen", desc: "Use as a laptop or tablet with the responsive touchscreen in any of four modes." },
+      { icon: "🎓", title: "Student Favorite", desc: "Lightweight enough to carry all day with a long battery for classes and study." },
+      { icon: "🔋", title: "10-Hour Battery", desc: "Full day of classes or work without needing to carry your charger." },
+      { icon: "🎨", title: "Stylus Compatible", desc: "Works with active pens for notes and sketching (stylus sold separately)." },
+      { icon: "🔒", title: "Fingerprint Login", desc: "Fast Windows Hello fingerprint reader for secure, convenient sign-in." }
+    ],
+    reviews_data: [
+      { name: "Emma G.", date: "Feb 2024", rating: 4, title: "Great budget 2-in-1", body: "Perfect for college. Light, the touch screen works great, and battery easily gets through a full day of classes.", verified: true },
+      { name: "Carlos M.", date: "Jan 2024", rating: 5, title: "Amazed at this price", body: "Can't believe what you get for under $500. 2-in-1 touch, AMD Ryzen, fingerprint reader. Handles everything I need.", verified: true },
+      { name: "Stephanie R.", date: "Dec 2023", rating: 4, title: "Solid entry-level 2-in-1", body: "The touchscreen is responsive and the keyboard is comfortable. Screen brightness is average but the laptop itself is great value.", verified: false }
+    ]
+  },
+  {
+    id: 11, name: "ThinkPad L14 Gen 4",
+    series: "ThinkPad", type: "Business",
+    processor: "AMD Ryzen 7 PRO 7730U", processorBrand: "AMD",
+    ram: 32, storage: "1TB SSD", screen: 14.0,
+    price: 1099, origPrice: 1399, savings: 300,
+    rating: 4.6, reviews: 87, badge: "", color: "Thunder Black",
+    cardBg: "#0d1520", cardAccent: "#294E95",
+    sku: "21C6S04300",
+    display: "14\" FHD IPS, 300 nits, 45% NTSC",
+    graphics: "AMD Radeon Graphics",
+    battery: "Up to 13 hours",
+    weight: "3.42 lbs (1.55 kg)",
+    os: "Windows 11 Pro",
+    ports: "2× USB-C (Thunderbolt 4), 2× USB-A 3.2, HDMI 2.0, RJ-45, SD card reader, headphone jack",
+    wireless: "Wi-Fi 6E, Bluetooth 5.3, optional 4G LTE",
+    webcam: "1080p FHD with IR",
+    keyboard: "Backlit, spill-resistant, TrackPoint",
+    fingerprint: "Yes, with IR camera",
+    military: "MIL-STD-810H certified",
+    features: [
+      { icon: "🧠", title: "32GB RAM Standard", desc: "Maxed-out 32GB RAM for power users, developers, and heavy multitaskers." },
+      { icon: "💼", title: "AMD PRO Platform", desc: "AMD Ryzen PRO brings enterprise-grade security and manageability to the ThinkPad L series." },
+      { icon: "🌐", title: "Optional 4G LTE", desc: "Stay connected anywhere with optional 4G LTE mobile broadband capability." },
+      { icon: "🛡️", title: "MIL-STD-810H", desc: "Military-grade durability tested against real-world conditions in 12 categories." },
+      { icon: "⌨️", title: "TrackPoint Precision", desc: "The iconic ThinkPad TrackPoint for precise navigation without moving your hands." },
+      { icon: "🔋", title: "13-Hour Battery", desc: "All-day and beyond battery life keeps you productive through the longest days." }
+    ],
+    reviews_data: [
+      { name: "Daniel F.", date: "Mar 2024", rating: 5, title: "Best business laptop under $1200", body: "32GB RAM at this price is unheard of. The AMD PRO chip is blazing fast. Perfect for developers. TrackPoint is as reliable as always.", verified: true },
+      { name: "Jessica W.", date: "Feb 2024", rating: 4, title: "Excellent specs for the money", body: "Great performance with the Ryzen 7 PRO. The 1TB SSD is super fast. Display is average but functional for work.", verified: true },
+      { name: "Patrick O.", date: "Jan 2024", rating: 5, title: "My new primary work machine", body: "Replaced a 3-year old ThinkPad X1 with this. The 32GB RAM upgrade and 1TB SSD make development work fly.", verified: false }
+    ]
+  },
+  {
+    id: 12, name: "Yoga 6 Gen 8",
+    series: "Yoga", type: "2-in-1",
+    processor: "AMD Ryzen 7 7730U", processorBrand: "AMD",
+    ram: 16, storage: "512GB SSD", screen: 13.3,
+    price: 849, origPrice: 999, savings: 150,
+    rating: 4.7, reviews: 143, badge: "", color: "Storm Grey",
+    cardBg: "#2e2030", cardAccent: "#9c27b0",
+    sku: "83B2000CUS",
+    display: "13.3\" FHD IPS Touch, 300 nits, 100% sRGB",
+    graphics: "AMD Radeon Graphics",
+    battery: "Up to 14 hours",
+    weight: "3.09 lbs (1.4 kg)",
+    os: "Windows 11 Home",
+    ports: "2× USB-C 3.2, 1× USB-A 3.2, HDMI 2.0, SD card reader, headphone jack",
+    wireless: "Wi-Fi 6E, Bluetooth 5.3",
+    webcam: "1080p FHD with IR",
+    keyboard: "Backlit, spill-resistant",
+    fingerprint: "Yes, with IR camera",
+    military: "N/A",
+    features: [
+      { icon: "🎨", title: "Fabric Lid Design", desc: "Unique woven-fabric lid in Storm Grey is both stylish and scratch-resistant." },
+      { icon: "🔄", title: "360° Compact 2-in-1", desc: "13.3\" form factor makes it the most portable Yoga 2-in-1 — ideal for travel." },
+      { icon: "🔋", title: "14-Hour Battery", desc: "AMD Ryzen 7 efficiency delivers exceptional battery life for constant mobility." },
+      { icon: "⚡", title: "AMD Ryzen 7", desc: "Powerful 8-core AMD performance for multitasking, editing, and everyday productivity." },
+      { icon: "📸", title: "1080p IR Camera", desc: "Clear video calls and Windows Hello facial recognition for secure login." },
+      { icon: "🎵", title: "Dolby Audio", desc: "Dolby Audio-certified speakers tuned for crisp, clear sound in any mode." }
+    ],
+    reviews_data: [
+      { name: "Sophie A.", date: "Mar 2024", rating: 5, title: "Prettiest laptop I've owned", body: "The fabric lid is gorgeous and unique. Feels premium. Battery really does last 13+ hours in real use. Love the compact size.", verified: true },
+      { name: "Marcus J.", date: "Feb 2024", rating: 5, title: "Perfect travel laptop", body: "So light and compact. AMD Ryzen 7 handles everything smoothly. The 2-in-1 hinge is solid after 3 months of daily use.", verified: true },
+      { name: "Tina R.", date: "Jan 2024", rating: 4, title: "Great laptop, small screen", body: "Everything about this laptop is great — performance, battery, design. The 13.3\" screen is a bit small for extended desktop work.", verified: false }
+    ]
+  }
+];
+
+// ── Helpers ─────────────────────────────────────────────────
+const CART_KEY = 'lenovo_cart';
+function getCart() { try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; } }
+function saveCart(c) { localStorage.setItem(CART_KEY, JSON.stringify(c)); }
+function loadCartCount() {
+  const total = getCart().reduce((s,i)=>s+i.quantity,0);
+  const el = document.getElementById('cart-count');
+  if (el) el.textContent = total;
+}
+function addToCart(id) {
+  const p = PRODUCTS.find(x=>x.id===id);
+  if (!p) return;
+  const cart = getCart();
+  const ex = cart.find(i=>i.id===id);
+  if (ex) ex.quantity += 1; else cart.push({...p, quantity:1});
+  saveCart(cart);
+  loadCartCount();
+  showToast(`${p.name} added to cart!`);
+}
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.classList.add('show'),10);
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),400); },2500);
+}
+function renderStars(r) {
+  const full=Math.floor(r), half=r%1>=.5?1:0, empty=5-full-half;
+  return `<span class="stars" aria-label="${r} out of 5">${'★'.repeat(full)}${half?'½':''}${'☆'.repeat(empty)}</span>`;
+}
+function laptopSVG(accent, bg) {
+  return `<svg viewBox="0 0 220 145" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:340px">
+    <rect x="18" y="8" width="184" height="112" rx="10" fill="${accent}" opacity="0.25"/>
+    <rect x="24" y="14" width="172" height="100" rx="7" fill="#0a0a1a" opacity="0.9"/>
+    <rect x="30" y="20" width="160" height="88" rx="4" fill="#111827" opacity="0.8"/>
+    <line x1="30" y1="60" x2="190" y2="60" stroke="${accent}" stroke-width="0.5" opacity="0.3"/>
+    <circle cx="110" cy="17" r="2.5" fill="${accent}" opacity="0.6"/>
+    <rect x="2" y="120" width="216" height="16" rx="5" fill="${accent}" opacity="0.3"/>
+    <rect x="85" y="123" width="50" height="7" rx="3" fill="${accent}" opacity="0.2"/>
+    <text x="110" y="72" font-size="26" text-anchor="middle" fill="${accent}" opacity="0.35" font-family="monospace">⌨</text>
+  </svg>`;
+}
+
+// ── Tab switching ──────────────────────────────────────────
+function switchTab(tabKey) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tabKey));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('active', p.id === 'tab-' + tabKey));
+}
+
+// ── Render related products ────────────────────────────────
+function renderRelated(p) {
+  const others = PRODUCTS.filter(x => x.id !== p.id && (x.series === p.series || x.type === p.type)).slice(0,4);
+  if (!others.length) return '';
+  const cards = others.map(r => {
+    const savePct = Math.round((r.savings/r.origPrice)*100);
+    return `
+    <article class="product-card" style="font-size:13px">
+      <div class="product-img" style="background:linear-gradient(135deg,${r.cardBg} 0%,${r.cardAccent}55 100%)">
+        ${laptopSVG(r.cardAccent)}
+        <span class="series-chip" style="background:${r.cardAccent}">${r.series}</span>
+      </div>
+      <div class="product-body">
+        <h3 class="product-name" style="font-size:14px">${r.name}</h3>
+        <div class="product-pricing">
+          <span class="price-current">$${r.price.toLocaleString()}</span>
+          <span class="price-original">$${r.origPrice.toLocaleString()}</span>
+        </div>
+        <div class="product-actions" style="gap:6px">
+          <button class="btn btn-primary" style="flex:1;padding:8px" onclick="addToCart(${r.id})">Add to Cart</button>
+          <a href="product.html?id=${r.id}" class="btn btn-ghost" style="padding:8px;text-align:center">Details</a>
+        </div>
+      </div>
+    </article>`;
+  }).join('');
+  return `
+  <section class="related-section">
+    <h2>You May Also Like</h2>
+    <div class="related-grid">${cards}</div>
+  </section>`;
+}
+
+// ── Main render ────────────────────────────────────────────
+function renderPDP(p) {
+  document.title = `${p.name} | Lenovo US`;
+  document.getElementById('breadcrumb-product').textContent = p.name;
+
+  const savePct = Math.round((p.savings / p.origPrice) * 100);
+  const badgeHTML = p.badge ? `<span class="pdp-badge red">${p.badge}</span>` : '';
+
+  // Rating bars (simulated)
+  const barData = [
+    {stars:5, pct: Math.round(p.rating >= 4.8 ? 75 : p.rating >= 4.5 ? 62 : 50)},
+    {stars:4, pct: Math.round(p.rating >= 4.5 ? 20 : 30)},
+    {stars:3, pct: 8}, {stars:2, pct: 4}, {stars:1, pct: 3}
+  ];
+
+  // Adjust to total 100
+  const sum = barData.reduce((s,b)=>s+b.pct,0);
+  barData[0].pct += (100 - sum);
+
+  const barsHTML = barData.map(b => `
+    <div class="bar-row">
+      <span class="label">${b.stars} ★</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${b.pct}%"></div></div>
+      <span class="bar-count">${Math.round(p.reviews * b.pct / 100)}</span>
+    </div>`).join('');
+
+  const reviewsHTML = p.reviews_data.map(r => `
+    <div class="review-card">
+      <div class="rev-header">
+        <div>
+          <div class="rev-name">${r.name}</div>
+          <div class="rev-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
+        </div>
+        <div class="rev-date">${r.date}</div>
+      </div>
+      <div class="rev-title">${r.title}</div>
+      <div class="rev-body">${r.body}</div>
+      ${r.verified ? '<div class="rev-verified">✓ Verified Purchase</div>' : ''}
+    </div>`).join('');
+
+  const featuresHTML = p.features.map(f => `
+    <div class="overview-feature">
+      <div class="feat-icon">${f.icon}</div>
+      <div>
+        <h4>${f.title}</h4>
+        <p>${f.desc}</p>
+      </div>
+    </div>`).join('');
+
+  const html = `
+  <!-- PDP Hero -->
+  <div class="pdp-hero">
+    <!-- Gallery -->
+    <div class="pdp-gallery">
+      <div class="pdp-main-img" style="background:linear-gradient(135deg,${p.cardBg} 0%,${p.cardAccent}55 100%)">
+        ${laptopSVG(p.cardAccent, p.cardBg)}
+      </div>
+      <div class="pdp-thumbs">
+        <div class="pdp-thumb active" style="background:linear-gradient(135deg,${p.cardBg} 0%,${p.cardAccent}55 100%)">
+          ${laptopSVG(p.cardAccent)}
+        </div>
+        <div class="pdp-thumb" style="background:${p.cardBg};display:flex;align-items:center;justify-content:center">
+          <span style="font-size:22px">🔋</span>
+        </div>
+        <div class="pdp-thumb" style="background:${p.cardBg};display:flex;align-items:center;justify-content:center">
+          <span style="font-size:22px">⌨️</span>
+        </div>
+        <div class="pdp-thumb" style="background:${p.cardBg};display:flex;align-items:center;justify-content:center">
+          <span style="font-size:22px">🖥️</span>
+        </div>
+      </div>
+      <div class="view-badge">⟳ 360° View &nbsp;|&nbsp; 📷 Gallery</div>
+    </div>
+
+    <!-- Info -->
+    <div class="pdp-info">
+      <span class="pdp-series-tag" style="background:${p.cardAccent}">${p.series}</span>
+      <h1 class="pdp-title">${p.name}</h1>
+      <p class="pdp-sku">SKU: ${p.sku} &nbsp;|&nbsp; Color: ${p.color}</p>
+
+      <div class="pdp-rating-row">
+        ${renderStars(p.rating)}
+        <span class="rating-val">${p.rating}</span>
+        <span class="review-count" onclick="switchTab('reviews')">${p.reviews} Reviews</span>
+      </div>
+
+      <div class="pdp-badge-row">
+        ${badgeHTML}
+        <span class="pdp-badge green">✓ In Stock</span>
+        <span class="pdp-badge outline">Free Shipping</span>
+        ${p.military !== 'N/A' ? '<span class="pdp-badge outline">MIL-STD-810H</span>' : ''}
+      </div>
+
+      <div class="pdp-price-block">
+        <div>
+          <span class="pdp-price-current">$${p.price.toLocaleString()}</span>
+          <span class="pdp-price-original">$${p.origPrice.toLocaleString()}</span>
+        </div>
+        <div class="pdp-price-save">You save $${p.savings} (${savePct}% off)</div>
+        <div class="pdp-ecoupon">🏷️ Extra 5% off with coupon code <strong>LENOVO5</strong></div>
+      </div>
+
+      <div class="pdp-key-specs">
+        <h4>Key Specs</h4>
+        <div class="pdp-spec-pills">
+          <div class="pdp-spec-pill"><span class="icon">⚙️</span>${p.processor}</div>
+          <div class="pdp-spec-pill"><span class="icon">🧠</span>${p.ram}GB RAM</div>
+          <div class="pdp-spec-pill"><span class="icon">💾</span>${p.storage}</div>
+          <div class="pdp-spec-pill"><span class="icon">🖥️</span>${p.screen}"</div>
+          <div class="pdp-spec-pill"><span class="icon">🔋</span>${p.battery}</div>
+          <div class="pdp-spec-pill"><span class="icon">⚖️</span>${p.weight}</div>
+        </div>
+      </div>
+
+      <div class="pdp-actions">
+        <button class="btn btn-primary" onclick="addToCart(${p.id})">Add to Cart</button>
+        <button class="btn-wishlist" title="Save to wishlist" onclick="showToast('${p.name.replace(/'/g,"\\'")} saved to wishlist!')">♡</button>
+      </div>
+
+      <div class="pdp-shipping">
+        <div class="ship-row"><span class="ship-icon">🚚</span><span class="ship-label">FREE Standard Shipping</span> — Estimated delivery in 3–5 business days</div>
+        <div class="ship-row"><span class="ship-icon">⚡</span>Express shipping available at checkout</div>
+        <div class="ship-row"><span class="ship-icon">↩️</span>30-Day hassle-free returns</div>
+      </div>
+
+      <div class="pdp-guarantee">
+        <span>🔒 SSL Secure Checkout</span>
+        <span>🛡️ 1-Year Limited Warranty</span>
+        <span>💳 Financing Available</span>
+      </div>
+
+      <div class="pdp-financing">
+        💳 As low as <strong>$${Math.round(p.price/24)}/mo</strong> for 24 months with Lenovo Financing. <a href="#" style="color:var(--blue);text-decoration:underline">See terms</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="pdp-tabs">
+    <div class="tab-nav" role="tablist">
+      <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')" role="tab">Overview</button>
+      <button class="tab-btn" data-tab="specs" onclick="switchTab('specs')" role="tab">Tech Specs</button>
+      <button class="tab-btn" data-tab="reviews" onclick="switchTab('reviews')" role="tab">Reviews (${p.reviews})</button>
+    </div>
+
+    <!-- Overview Tab -->
+    <div id="tab-overview" class="tab-pane active">
+      <div class="overview-grid">${featuresHTML}</div>
+      <div class="in-box">
+        <h3>What's in the Box</h3>
+        <ul>
+          <li>📦 ${p.name}</li>
+          <li>🔌 Power Adapter</li>
+          <li>📋 Quick Start Guide</li>
+          <li>📜 Warranty Card</li>
+          ${p.series === 'Yoga' && p.type === '2-in-1' ? '<li>✏️ Lenovo Digital Pen</li>' : ''}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Specs Tab -->
+    <div id="tab-specs" class="tab-pane">
+      <table class="specs-table">
+        <thead><tr><th colspan="2">Technical Specifications — ${p.name}</th></tr></thead>
+        <tbody>
+          <tr class="specs-section-head"><td colspan="2">Processor</td></tr>
+          <tr><td>Processor</td><td>${p.processor}</td></tr>
+          <tr><td>Processor Brand</td><td>${p.processorBrand}</td></tr>
+          <tr class="specs-section-head"><td colspan="2">Memory &amp; Storage</td></tr>
+          <tr><td>RAM</td><td>${p.ram}GB</td></tr>
+          <tr><td>Storage</td><td>${p.storage}</td></tr>
+          <tr class="specs-section-head"><td colspan="2">Display</td></tr>
+          <tr><td>Display</td><td>${p.display}</td></tr>
+          <tr><td>Screen Size</td><td>${p.screen}"</td></tr>
+          <tr class="specs-section-head"><td colspan="2">Graphics</td></tr>
+          <tr><td>Graphics</td><td>${p.graphics}</td></tr>
+          <tr class="specs-section-head"><td colspan="2">Connectivity</td></tr>
+          <tr><td>Ports</td><td>${p.ports}</td></tr>
+          <tr><td>Wireless</td><td>${p.wireless}</td></tr>
+          <tr class="specs-section-head"><td colspan="2">Input &amp; Security</td></tr>
+          <tr><td>Webcam</td><td>${p.webcam}</td></tr>
+          <tr><td>Keyboard</td><td>${p.keyboard}</td></tr>
+          <tr><td>Fingerprint Reader</td><td>${p.fingerprint}</td></tr>
+          <tr class="specs-section-head"><td colspan="2">Battery &amp; Design</td></tr>
+          <tr><td>Battery Life</td><td>${p.battery}</td></tr>
+          <tr><td>Weight</td><td>${p.weight}</td></tr>
+          <tr><td>Color</td><td>${p.color}</td></tr>
+          <tr class="specs-section-head"><td colspan="2">Operating System</td></tr>
+          <tr><td>OS</td><td>${p.os}</td></tr>
+          <tr class="specs-section-head"><td colspan="2">Certifications</td></tr>
+          <tr><td>Military Standard</td><td>${p.military}</td></tr>
+          <tr><td>SKU</td><td>${p.sku}</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Reviews Tab -->
+    <div id="tab-reviews" class="tab-pane">
+      <div class="reviews-summary">
+        <div class="reviews-score">
+          <div class="big-num">${p.rating}</div>
+          <div class="stars">${'★'.repeat(Math.round(p.rating))}</div>
+          <div class="out-of">out of 5 · ${p.reviews} reviews</div>
+        </div>
+        <div class="reviews-bars">${barsHTML}</div>
+      </div>
+      <div class="review-list">${reviewsHTML}</div>
+    </div>
+  </div>
+
+  ${renderRelated(p)}`;
+
+  document.getElementById('pdp-content').innerHTML = html;
+}
+
+// ── Compare ───────────────────────────────────────────────
+const COMPARE_KEY = 'lenovo_compare';
+const COMPARE_MAX = 4;
+
+function getCompare() { try { return JSON.parse(localStorage.getItem(COMPARE_KEY)) || []; } catch { return []; } }
+function saveCompare(ids) { localStorage.setItem(COMPARE_KEY, JSON.stringify(ids)); }
+
+function toggleComparePDP(id) {
+  let ids = getCompare();
+  if (ids.includes(id)) {
+    ids = ids.filter(x => x !== id);
+    showToast('Removed from comparison.');
+  } else {
+    if (ids.length >= COMPARE_MAX) {
+      showToast(`Max ${COMPARE_MAX} laptops can be compared at once.`);
+      return;
+    }
+    ids.push(id);
+    showToast('Added to comparison!');
+  }
+  saveCompare(ids);
+  syncCompareUI(id);
+}
+
+function clearComparePDP() {
+  saveCompare([]);
+  const currentId = parseInt(new URLSearchParams(window.location.search).get('id'));
+  syncCompareUI(currentId);
+  showToast('Comparison cleared.');
+}
+
+// Inject the sticky bottom bar with the correct product ID baked in
+function injectComparePDPBar(productId) {
+  const bar = document.createElement('div');
+  bar.id = 'pdp-cmp-bar';
+  bar.className = 'pdp-cmp-bar';
+  bar.innerHTML = `
+    <div class="pdp-cmp-bar-inner">
+      <div class="pdp-cmp-bar-label">
+        <span>📊</span>
+        <span class="pdp-cmp-bar-label-text">Compare</span>
+        <span class="pdp-cmp-bar-label-count" id="pdp-cmp-count">0 / 4</span>
+      </div>
+      <div class="pdp-cmp-bar-chips" id="pdp-cmp-names">
+        <span class="pdp-cmp-bar-empty-hint" id="pdp-cmp-empty">Add laptops to compare side by side</span>
+      </div>
+      <div class="pdp-cmp-bar-actions">
+        <button class="pdp-cmp-bar-toggle" id="pdp-cmp-btn"
+                onclick="toggleComparePDP(${productId})">⊕ Add This Laptop</button>
+        <a href="compare.html" class="pdp-cmp-bar-view disabled" id="pdp-cmp-view-btn">View Comparison →</a>
+        <button class="pdp-cmp-bar-clear" id="pdp-cmp-clear-btn"
+                onclick="clearComparePDP()" disabled>Clear</button>
+      </div>
+    </div>`;
+  document.body.appendChild(bar);
+}
+
+function syncCompareUI(currentId) {
+  const ids = getCompare();
+  const inList = ids.includes(currentId);
+  const full = !inList && ids.length >= COMPARE_MAX;
+
+  // Toggle button label + state
+  const btn = document.getElementById('pdp-cmp-btn');
+  if (btn) {
+    if (inList)    { btn.textContent = '✓ Added to Compare'; }
+    else if (full) { btn.textContent = '⊕ Compare (max 4)'; }
+    else           { btn.textContent = '⊕ Add This Laptop'; }
+    btn.classList.toggle('cmp-active', inList);
+    btn.disabled = full;
+  }
+
+  // Count badge
+  const countEl = document.getElementById('pdp-cmp-count');
+  if (countEl) countEl.textContent = `${ids.length} / ${COMPARE_MAX}`;
+
+  // Chips area
+  const emptyEl = document.getElementById('pdp-cmp-empty');
+  const chipsEl = document.getElementById('pdp-cmp-names');
+  if (emptyEl && chipsEl) {
+    if (ids.length === 0) {
+      emptyEl.style.display = '';
+      // Remove old chips (keep the hint span)
+      [...chipsEl.querySelectorAll('.pdp-cmp-bar-chip')].forEach(c => c.remove());
+    } else {
+      emptyEl.style.display = 'none';
+      // Rebuild chips
+      [...chipsEl.querySelectorAll('.pdp-cmp-bar-chip')].forEach(c => c.remove());
+      ids.forEach(id => {
+        const p = PRODUCTS.find(x => x.id === id);
+        if (!p) return;
+        const isCurrent = id === currentId;
+        const chip = document.createElement('span');
+        chip.className = `pdp-cmp-bar-chip${isCurrent ? ' current-chip' : ''}`;
+        chip.textContent = (isCurrent ? '✓ ' : '') + p.name;
+        chipsEl.appendChild(chip);
+      });
+    }
+  }
+
+  // View + clear buttons
+  const viewBtn  = document.getElementById('pdp-cmp-view-btn');
+  const clearBtn = document.getElementById('pdp-cmp-clear-btn');
+  if (viewBtn) {
+    if (ids.length >= 2) {
+      viewBtn.classList.remove('disabled');
+      viewBtn.href = `compare.html?ids=${ids.join(',')}`;
+      viewBtn.title = '';
+    } else {
+      viewBtn.classList.add('disabled');
+      viewBtn.title = ids.length === 1 ? 'Add at least 2 laptops to compare' : 'No laptops added yet';
+    }
+  }
+  if (clearBtn) clearBtn.disabled = ids.length === 0;
+}
+
+// ── Init ───────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Search toggle
+  const searchBtn = document.getElementById('search-toggle');
+  const searchBox = document.getElementById('search-box');
+  if (searchBtn && searchBox) searchBtn.addEventListener('click', () => searchBox.classList.toggle('open'));
+
+  loadCartCount();
+
+  const params = new URLSearchParams(window.location.search);
+  const id = parseInt(params.get('id'));
+  const product = PRODUCTS.find(p => p.id === id);
+
+  if (product) {
+    renderPDP(product);
+    injectComparePDPBar(product.id);
+    syncCompareUI(product.id);
+  } else {
+    document.getElementById('pdp-content').innerHTML = `
+      <div class="pdp-not-found">
+        <h2>Product Not Found</h2>
+        <p>We couldn't find that product. It may have been removed or the link is incorrect.</p>
+        <a href="laptops.html" class="btn btn-primary">Browse All Laptops</a>
+      </div>`;
+    document.getElementById('breadcrumb-product').textContent = 'Product Not Found';
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Cart | Lenovo US — Variant A</title>
+  <meta name="ab-variant" content="A-sidebar-filter" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ── Top Banner ──────────────────────────────────────────── -->
+<div class="top-banner">
+  <span>🚚 Free Standard Shipping on orders $50+</span>
+  <span>🎓 <a href="#">Student &amp; Teacher Discounts</a></span>
+  <span>📞 1-855-2-LENOVO</span>
+</div>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">LENO<span>V</span>O</a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="laptops.html">Laptops &amp; 2-in-1s</a>
+      <a href="#">Desktops</a>
+      <a href="#">Tablets</a>
+      <a href="#">Monitors</a>
+      <a href="#">Deals</a>
+    </nav>
+    <div class="header-right">
+      <div id="search-box">
+        <input type="text" placeholder="Search…" aria-label="Search" />
+        <button>🔍</button>
+      </div>
+      <button class="icon-btn" id="search-toggle" aria-label="Search">🔍</button>
+      <button class="icon-btn" aria-label="Account">👤</button>
+      <a href="cart.html" class="icon-btn" aria-label="Cart" style="position:relative;text-decoration:none">
+        🛒 <span class="cart-count" id="cart-count">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ── Breadcrumb ───────────────────────────────────────────── -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="container">
+    <ol>
+      <li><a href="index.html">Home</a></li>
+      <li aria-current="page">Shopping Cart</li>
+    </ol>
+  </div>
+</nav>
+
+<!-- ── Page Hero ────────────────────────────────────────────── -->
+<div class="cart-page-hero">
+  <div class="container">
+    <h1>🛒 Your Shopping Cart</h1>
+    <p>Review your items, update quantities, and proceed to checkout</p>
+  </div>
+</div>
+
+<!-- ── Main Content ─────────────────────────────────────────── -->
+<main>
+  <div class="container">
+
+    <!-- Empty state -->
+    <div id="empty-cart" class="empty-cart" style="display:none">
+      <div class="empty-cart-icon">🛒</div>
+      <h2>Your cart is empty</h2>
+      <p>Looks like you haven't added anything yet. Browse our latest laptops to find the perfect device.</p>
+      <a href="laptops.html" class="btn btn-primary" style="display:inline-block;padding:14px 32px;font-size:15px;text-decoration:none">Shop Laptops</a>
+    </div>
+
+    <!-- Cart content (items + summary) -->
+    <div id="cart-content" class="cart-layout" style="display:none">
+
+      <!-- ── Left: Cart items ────────────────────────────────── -->
+      <div class="cart-items-panel">
+        <div class="cart-panel-header">
+          <h2>Cart Items</h2>
+          <span class="cart-item-count-badge"><span id="cart-item-count">0</span> items</span>
+        </div>
+        <div id="cart-items">
+          <!-- Rendered by JS -->
+        </div>
+        <div style="padding-top:16px">
+          <a href="laptops.html" class="btn-continue">← Continue Shopping</a>
+        </div>
+      </div>
+
+      <!-- ── Right: Order Summary ────────────────────────────── -->
+      <aside class="order-summary" aria-label="Order summary">
+        <div class="summary-header">Order Summary</div>
+        <div class="summary-body">
+
+          <div class="summary-row savings">
+            <span class="label">Your Savings</span>
+            <span class="value" id="summary-savings">$0</span>
+          </div>
+          <hr class="summary-divider" />
+
+          <div class="summary-row">
+            <span class="label">Subtotal</span>
+            <span class="value" id="summary-subtotal">$0</span>
+          </div>
+          <div class="summary-row shipping">
+            <span class="label">Shipping</span>
+            <span class="value" id="summary-shipping">FREE</span>
+          </div>
+          <div class="summary-row">
+            <span class="label">Est. Tax (8%)</span>
+            <span class="value" id="summary-tax">$0</span>
+          </div>
+          <hr class="summary-divider" />
+
+          <div class="summary-total-row">
+            <span class="label">Total</span>
+            <span class="value" id="summary-total">$0</span>
+          </div>
+
+          <!-- Promo code -->
+          <div>
+            <div style="font-size:13px;font-weight:600;margin-bottom:8px;color:var(--text-mid)">Promo Code</div>
+            <div class="promo-box">
+              <input id="promo-input" type="text" placeholder="Enter code (try SAVE10)" />
+              <button id="apply-promo">Apply</button>
+            </div>
+            <div class="promo-msg" id="promo-msg"></div>
+          </div>
+
+          <button class="btn-checkout" onclick="handleCheckout()">
+            Proceed to Checkout →
+          </button>
+        </div>
+
+        <div class="summary-footer">
+          <span class="summary-guarantee">🔒 Secure 256-bit SSL checkout</span>
+          <span class="summary-guarantee">🔄 30-day hassle-free returns</span>
+          <span class="summary-guarantee">🛡️ 1-year manufacturer warranty</span>
+        </div>
+      </aside>
+
+    </div><!-- /cart-content -->
+
+    <!-- ── Recommendations ──────────────────────────────────── -->
+    <section class="recommendations-section" id="rec-section">
+      <div class="section-header">
+        <h2>You May Also Like</h2>
+        <a href="laptops.html">See All Laptops →</a>
+      </div>
+      <div class="rec-grid" id="recommendations-grid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ── Footer ───────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">LENO<span style="color:#E1251B">V</span>O</div>
+        <p>Smarter technology for all. Laptops, PCs, tablets, and smart devices designed for everyone.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="laptops.html">Laptops &amp; 2-in-1s</a></li>
+          <li><a href="#">Desktops &amp; AiOs</a></li>
+          <li><a href="#">Tablets</a></li>
+          <li><a href="#">Monitors</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Warranty Lookup</a></li>
+          <li><a href="#">Track Order</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Lenovo</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Newsroom</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Lenovo. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- main.js provides PRODUCTS array, getCart/saveCart are redefined below for cart page -->
+<script src="js/main.js"></script>
+<script>
+// ── Cart page logic ────────────────────────────────────────
+function renderCart() {
+  const cart = getCart();
+  loadCartCount();
+
+  const emptyEl   = document.getElementById('empty-cart');
+  const contentEl = document.getElementById('cart-content');
+  const countEl   = document.getElementById('cart-item-count');
+  const itemsEl   = document.getElementById('cart-items');
+
+  const total = cart.reduce((s, i) => s + i.quantity, 0);
+  if (countEl) countEl.textContent = total;
+
+  if (!cart.length) {
+    emptyEl.style.display   = 'block';
+    contentEl.style.display = 'none';
+    renderRecommendations(cart);
+    return;
+  }
+
+  emptyEl.style.display   = 'none';
+  contentEl.style.display = 'grid';
+
+  itemsEl.innerHTML = cart.map(item => {
+    const lineSave = item.savings * item.quantity;
+    return `
+    <div class="cart-item" data-id="${item.id}">
+      <div class="cart-item-img" style="background:linear-gradient(135deg,${item.cardBg} 0%,${item.cardAccent}55 100%)">
+        ${laptopSVG(item.cardAccent)}
+        <span class="ci-series-tag" style="background:${item.cardAccent}">${item.series}</span>
+      </div>
+      <div class="cart-item-info">
+        <h3>${item.name}</h3>
+        <ul>
+          <li>${item.processor}</li>
+          <li>${item.ram}GB RAM · ${item.storage}</li>
+          <li>${item.screen}" Display · ${item.color}</li>
+        </ul>
+        <div class="cart-item-meta">
+          <button class="cart-btn-remove" onclick="removeFromCart(${item.id})">🗑 Remove</button>
+          <button class="cart-btn-save">🤍 Save for Later</button>
+        </div>
+      </div>
+      <div class="qty-control" aria-label="Quantity">
+        <button onclick="changeQty(${item.id}, -1)" aria-label="Decrease">−</button>
+        <span id="qty-${item.id}">${item.quantity}</span>
+        <button onclick="changeQty(${item.id}, +1)" aria-label="Increase">+</button>
+      </div>
+      <div class="cart-item-price">
+        <span class="ci-price-current">$${(item.price * item.quantity).toLocaleString()}</span>
+        <span class="ci-price-unit">$${item.price.toLocaleString()} each</span>
+        <span class="ci-price-save">You save $${lineSave.toLocaleString()}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  renderSummary(cart);
+}
+
+function renderSummary(cart) {
+  const subtotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+  const savings  = cart.reduce((s, i) => s + i.savings * i.quantity, 0);
+  const tax      = Math.round(subtotal * 0.08);
+  const total    = subtotal + tax;
+
+  document.getElementById('summary-subtotal').textContent = '$' + subtotal.toLocaleString();
+  document.getElementById('summary-shipping').textContent = subtotal >= 50 ? 'FREE' : '$9.99';
+  document.getElementById('summary-tax').textContent      = '$' + tax.toLocaleString();
+  document.getElementById('summary-total').textContent    = '$' + total.toLocaleString();
+  document.getElementById('summary-savings').textContent  = '$' + savings.toLocaleString();
+}
+
+function changeQty(id, delta) {
+  const cart = getCart();
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  item.quantity = Math.max(1, item.quantity + delta);
+  saveCart(cart);
+  renderCart();
+}
+
+function removeFromCart(id) {
+  saveCart(getCart().filter(i => i.id !== id));
+  renderCart();
+}
+
+function renderRecommendations(cart) {
+  const grid   = document.getElementById('recommendations-grid');
+  if (!grid) return;
+  const cartIds = (cart || getCart()).map(i => i.id);
+  const recs    = PRODUCTS.filter(p => !cartIds.includes(p.id)).slice(0, 4);
+
+  grid.innerHTML = recs.map(p => {
+    return `
+    <div class="rec-card">
+      <div class="rec-img" style="background:linear-gradient(135deg,${p.cardBg} 0%,${p.cardAccent}55 100%)">
+        ${laptopSVG(p.cardAccent)}
+      </div>
+      <div class="rec-body">
+        <div class="rec-name">${p.name}</div>
+        <div class="rec-pricing">
+          <span class="rec-price-current">$${p.price.toLocaleString()}</span>
+          <span class="rec-price-orig">$${p.origPrice.toLocaleString()}</span>
+        </div>
+        <button class="btn btn-primary" style="width:100%;padding:9px 0;font-size:13px"
+          onclick="addToCartRec(${p.id})">Add to Cart</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function addToCartRec(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+  const cart = getCart();
+  const existing = cart.find(i => i.id === id);
+  if (existing) { existing.quantity += 1; }
+  else { cart.push({ ...p, quantity: 1 }); }
+  saveCart(cart);
+  renderCart();
+  showToast(`${p.name} added to cart!`);
+}
+
+function handleCheckout() {
+  const cart = getCart();
+  if (!cart.length) return;
+  const total = cart.reduce((s, i) => s + i.price * i.quantity, 0);
+  const tax   = Math.round(total * 0.08);
+  alert(
+    `✅ Order Confirmed!\n\n` +
+    cart.map(i => `• ${i.name} ×${i.quantity}  $${(i.price * i.quantity).toLocaleString()}`).join('\n') +
+    `\n\nSubtotal: $${total.toLocaleString()}\nTax (8%): $${tax.toLocaleString()}\nShipping: FREE\nTotal: $${(total + tax).toLocaleString()}\n\nThank you for shopping with Lenovo!`
+  );
+  saveCart([]);
+  renderCart();
+}
+
+// Promo code
+document.addEventListener('DOMContentLoaded', () => {
+  renderCart();
+  renderRecommendations();
+  document.getElementById('apply-promo').addEventListener('click', () => {
+    const code  = document.getElementById('promo-input').value.trim().toUpperCase();
+    const msgEl = document.getElementById('promo-msg');
+    if      (code === 'SAVE10')  { msgEl.textContent = '✓ 10% discount applied!'; msgEl.style.color = '#285D50'; }
+    else if (code === 'LENOVO5') { msgEl.textContent = '✓ $5 discount applied!';  msgEl.style.color = '#285D50'; }
+    else if (code)               { msgEl.textContent = '✗ Invalid promo code.';   msgEl.style.color = '#E1251B'; }
+  });
+});
+</script>
+</body>
+</html>

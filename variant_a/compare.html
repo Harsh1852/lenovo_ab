@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compare Laptops | Lenovo US — Variant A</title>
+  <meta name="ab-variant" content="A-sidebar-filter" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Compare Page Layout ──────────────────────────────── */
+    .cmp-page { max-width: 1280px; margin: 0 auto; padding: 24px; }
+
+    /* Top controls */
+    .cmp-controls {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+    }
+    .cmp-controls h1 { font-size: 24px; font-weight: 800; }
+    .cmp-controls-right { display: flex; gap: 10px; }
+
+    /* ── Comparison Table ─────────────────────────────────── */
+    .cmp-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    .cmp-table {
+      width: 100%; border-collapse: collapse; min-width: 600px;
+      table-layout: fixed;
+    }
+
+    /* Column widths: label col + up to 4 product cols */
+    .cmp-table .col-label { width: 160px; }
+    .cmp-table .col-product { min-width: 200px; }
+
+    /* ── Header row ─────────────────────────────────────────── */
+    .cmp-header-row { position: sticky; top: 70px; z-index: 100; background: #fff; }
+    .cmp-header-row td {
+      padding: 0; border-bottom: 3px solid var(--blue);
+      vertical-align: top;
+    }
+    .cmp-header-row .col-label-cell {
+      padding: 16px 12px 16px 0;
+      vertical-align: bottom;
+    }
+    .cmp-header-row .col-label-cell .cmp-count-label {
+      font-size: 12px; color: var(--text-soft); font-weight: 600;
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+
+    .cmp-product-header {
+      padding: 16px 12px; text-align: center; position: relative;
+    }
+    .cmp-prod-img {
+      width: 100%; aspect-ratio: 4/3; border-radius: 8px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 10px;
+    }
+    .cmp-prod-img svg { width: 80%; height: 80%; }
+    .cmp-prod-series {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 2px 8px; border-radius: 10px; color: #fff; margin-bottom: 6px;
+    }
+    .cmp-prod-name {
+      font-size: 13px; font-weight: 700; line-height: 1.3; margin-bottom: 8px;
+    }
+    .cmp-prod-price {
+      font-size: 20px; font-weight: 900; color: var(--blue); margin-bottom: 4px;
+    }
+    .cmp-prod-orig {
+      font-size: 12px; color: var(--text-soft); text-decoration: line-through; margin-bottom: 10px;
+    }
+    .cmp-prod-actions { display: flex; flex-direction: column; gap: 6px; }
+    .cmp-prod-actions .btn { font-size: 12px; padding: 8px 10px; }
+    .cmp-remove-btn {
+      position: absolute; top: 8px; right: 8px;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--border); border: none; cursor: pointer;
+      font-size: 14px; display: flex; align-items: center; justify-content: center;
+      transition: background .15s, color .15s; color: var(--text-soft);
+    }
+    .cmp-remove-btn:hover { background: var(--red); color: #fff; }
+
+    /* Add slot */
+    .cmp-add-slot {
+      padding: 16px 12px; text-align: center; vertical-align: middle;
+    }
+    .cmp-add-btn {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; width: 100%; aspect-ratio: 4/3;
+      border: 2px dashed var(--border); border-radius: 8px;
+      background: var(--bg); cursor: pointer; color: var(--text-soft);
+      font-size: 13px; font-weight: 500; transition: border-color .15s, color .15s;
+      margin-bottom: 10px;
+    }
+    .cmp-add-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .cmp-add-btn .plus { font-size: 28px; line-height: 1; }
+    .cmp-add-select {
+      width: 100%; padding: 8px; border: 1px solid var(--border);
+      border-radius: var(--radius); font-size: 12px; color: var(--text);
+      background: #fff; cursor: pointer;
+    }
+
+    /* ── Spec rows ──────────────────────────────────────────── */
+    .cmp-section-head td {
+      background: var(--blue-dark); color: #fff;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; padding: 9px 12px;
+    }
+    .cmp-row td {
+      padding: 13px 12px; border-bottom: 1px solid var(--border);
+      font-size: 13px; vertical-align: middle; text-align: center;
+    }
+    .cmp-row:nth-child(even) td { background: var(--bg); }
+    .cmp-row td.row-label {
+      text-align: left; font-weight: 600; color: var(--text-mid);
+      font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+      padding-left: 4px;
+    }
+
+    /* Winner highlighting */
+    .cmp-best {
+      background: #f0fdf4 !important;
+      font-weight: 700; color: var(--green) !important;
+    }
+    .cmp-best::after {
+      content: ' ✓'; font-size: 10px; opacity: .8;
+    }
+    .cmp-worst {
+      color: var(--text-soft);
+    }
+
+    /* Rating stars in table */
+    .cmp-stars { color: #f5a623; }
+
+    /* ── Empty / not found ──────────────────────────────────── */
+    .cmp-empty {
+      text-align: center; padding: 80px 20px;
+    }
+    .cmp-empty-icon { font-size: 64px; margin-bottom: 16px; opacity: .3; }
+    .cmp-empty h2 { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
+    .cmp-empty p { color: var(--text-soft); margin-bottom: 24px; }
+
+    /* ── Picker Modal ───────────────────────────────────────── */
+    .picker-overlay {
+      display: none; position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,.5); align-items: center; justify-content: center;
+    }
+    .picker-overlay.open { display: flex; }
+    .picker-modal {
+      background: #fff; border-radius: 12px; padding: 24px;
+      max-width: 720px; width: 90%; max-height: 80vh; overflow-y: auto;
+      box-shadow: 0 24px 64px rgba(0,0,0,.3);
+    }
+    .picker-modal h3 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+    .picker-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    }
+    @media (max-width: 560px) { .picker-grid { grid-template-columns: 1fr 1fr; } }
+    .picker-card {
+      border: 2px solid var(--border); border-radius: 8px; padding: 12px;
+      cursor: pointer; text-align: center; transition: border-color .15s;
+      font-size: 12px;
+    }
+    .picker-card:hover { border-color: var(--blue); }
+    .picker-card.picked { border-color: var(--green); background: #f0fdf4; }
+    .picker-card.disabled { opacity: .4; pointer-events: none; }
+    .picker-card-name { font-weight: 700; font-size: 12px; line-height: 1.3; margin-bottom: 4px; }
+    .picker-card-price { color: var(--blue); font-weight: 700; }
+    .picker-footer { margin-top: 16px; display: flex; justify-content: flex-end; gap: 10px; }
+
+    /* Highlight legend */
+    .cmp-legend {
+      display: flex; gap: 20px; font-size: 12px; color: var(--text-soft);
+      margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .cmp-legend span { display: flex; align-items: center; gap: 6px; }
+    .legend-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .cmp-table .col-label { width: 110px; }
+      .cmp-controls h1 { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Top Banner ──────────────────────────────────────────── -->
+<div class="top-banner">
+  <span>🚚 Free Standard Shipping on orders $50+</span>
+  <span>🎓 <a href="#">Student &amp; Teacher Discounts</a></span>
+  <span>📞 1-855-2-LENOVO</span>
+</div>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">LENO<span>V</span>O</a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="laptops.html">Laptops &amp; 2-in-1s</a>
+      <a href="#">Desktops</a>
+      <a href="#">Tablets</a>
+      <a href="#">Monitors</a>
+      <a href="#">Gaming</a>
+      <a href="#">Deals</a>
+      <a href="compare.html" class="active" style="color:var(--blue);font-weight:700">⊕ Compare</a>
+    </nav>
+    <div class="header-right">
+      <div id="search-box">
+        <input type="text" placeholder="Search laptops…" aria-label="Search" />
+        <button aria-label="Submit search">🔍</button>
+      </div>
+      <button class="icon-btn" id="search-toggle" aria-label="Toggle search">🔍</button>
+      <button class="icon-btn" aria-label="Account">👤</button>
+      <a href="cart.html" class="icon-btn" aria-label="Cart" style="position:relative;text-decoration:none">
+        🛒 <span class="cart-count" id="cart-count">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ── Breadcrumb ───────────────────────────────────────────── -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="container">
+    <ol>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="laptops.html">Laptops &amp; 2-in-1s</a></li>
+      <li aria-current="page">Compare</li>
+    </ol>
+  </div>
+</nav>
+
+<!-- ── Main Content ─────────────────────────────────────────── -->
+<main>
+  <div class="cmp-page" id="cmp-page">
+    <!-- Rendered by JS -->
+  </div>
+</main>
+
+<!-- ── Picker Modal ─────────────────────────────────────────── -->
+<div class="picker-overlay" id="picker-overlay" onclick="closePickerOnOverlay(event)">
+  <div class="picker-modal" id="picker-modal">
+    <h3>Add a Laptop to Compare <span id="picker-count-label" style="font-size:13px;font-weight:400;color:var(--text-soft)"></span></h3>
+    <div class="picker-grid" id="picker-grid"></div>
+    <div class="picker-footer">
+      <button class="btn btn-ghost" onclick="closePicker()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ───────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">LENO<span style="color:#E1251B">V</span>O</div>
+        <p>Smarter technology for all.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Products</h4><ul>
+        <li><a href="laptops.html">Laptops &amp; 2-in-1s</a></li>
+        <li><a href="#">Desktops &amp; AiOs</a></li>
+        <li><a href="#">Tablets &amp; Pads</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Support</h4><ul>
+        <li><a href="#">Driver Downloads</a></li>
+        <li><a href="#">Warranty Lookup</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Company</h4><ul>
+        <li><a href="#">About Lenovo</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Newsroom</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Lenovo. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Full product database with extended specs ────────────────
+const PRODUCTS = [
+  { id:1,  name:"ThinkPad X1 Carbon Gen 12",  series:"ThinkPad",  type:"Ultrabook", processor:"Intel Core Ultra 7 155H",  processorBrand:"Intel", ram:16, storage:"512GB SSD", screen:14.0, price:1499, origPrice:1899, savings:400, rating:4.8, reviews:245, badge:"Best Seller",     color:"Black",         cardBg:"#1a2340", cardAccent:"#294E95", display:"14\" 2.8K OLED 400nits",      graphics:"Intel Arc Graphics",         battery:"15 hrs", batteryNum:15, weightLbs:2.48, os:"Windows 11 Pro",  ports:"2× TB4, 2× USB-A, HDMI 2.1",         wireless:"Wi-Fi 6E, BT 5.3", webcam:"1080p FHD+IR", military:"MIL-STD-810H", fingerprint:"Yes" },
+  { id:2,  name:"IdeaPad Slim 5 Gen 9",        series:"IdeaPad",   type:"Everyday",  processor:"AMD Ryzen 5 7530U",        processorBrand:"AMD",   ram:8,  storage:"256GB SSD", screen:15.6, price:549,  origPrice:699,  savings:150, rating:4.5, reviews:312, badge:"",              color:"Arctic Grey",   cardBg:"#1e3a5f", cardAccent:"#4a90d9", display:"15.6\" FHD IPS 300nits",      graphics:"AMD Radeon Graphics",        battery:"10 hrs", batteryNum:10, weightLbs:3.86, os:"Windows 11 Home", ports:"2× USB-A, 1× USB-C, HDMI 1.4",       wireless:"Wi-Fi 6, BT 5.1",  webcam:"720p HD",      military:"N/A",         fingerprint:"Yes" },
+  { id:3,  name:"Legion 5 Pro Gen 8",          series:"Legion",    type:"Gaming",    processor:"AMD Ryzen 7 7745HX",       processorBrand:"AMD",   ram:16, storage:"1TB SSD",   screen:16.0, price:1299, origPrice:1499, savings:200, rating:4.7, reviews:189, badge:"Gaming Pick",    color:"Onyx Grey",     cardBg:"#1a0a2e", cardAccent:"#7c3aed", display:"16\" QHD+ IPS 165Hz 500nits", graphics:"RTX 4060 8GB",               battery:"6 hrs",  batteryNum:6,  weightLbs:5.40, os:"Windows 11 Home", ports:"1× TB4, 3× USB-A, HDMI 2.1",         wireless:"Wi-Fi 6E, BT 5.3", webcam:"1080p FHD",    military:"N/A",         fingerprint:"No"  },
+  { id:4,  name:"Yoga 9i Gen 9",               series:"Yoga",      type:"2-in-1",    processor:"Intel Core Ultra 7 165H", processorBrand:"Intel", ram:16, storage:"1TB SSD",   screen:14.0, price:1199, origPrice:1599, savings:400, rating:4.9, reviews:156, badge:"Editor's Choice",color:"Oatmeal",       cardBg:"#3d2b1f", cardAccent:"#c9881a", display:"14\" 2.8K OLED Touch 400nits",graphics:"Intel Arc Graphics",         battery:"13 hrs", batteryNum:13, weightLbs:3.09, os:"Windows 11 Home", ports:"2× TB4, 1× USB-A, HDMI 2.1",         wireless:"Wi-Fi 6E, BT 5.3", webcam:"1080p FHD+IR", military:"N/A",         fingerprint:"Yes" },
+  { id:5,  name:"ThinkBook 14 Gen 6",          series:"ThinkBook", type:"Business",  processor:"Intel Core i5-1335U",     processorBrand:"Intel", ram:8,  storage:"256GB SSD", screen:14.0, price:799,  origPrice:999,  savings:200, rating:4.4, reviews:98,  badge:"",              color:"Arctic Grey",   cardBg:"#1a3050", cardAccent:"#3a7bd5", display:"14\" FHD IPS 300nits",        graphics:"Intel Iris Xe Graphics",     battery:"12 hrs", batteryNum:12, weightLbs:3.20, os:"Windows 11 Pro",  ports:"2× TB4, 2× USB-A, HDMI 2.0",         wireless:"Wi-Fi 6, BT 5.2",  webcam:"1080p FHD",    military:"N/A",         fingerprint:"Yes" },
+  { id:6,  name:"IdeaPad Gaming 3 Gen 8",      series:"IdeaPad",   type:"Gaming",    processor:"Intel Core i7-13620H",    processorBrand:"Intel", ram:16, storage:"512GB SSD", screen:15.6, price:799,  origPrice:1099, savings:300, rating:4.6, reviews:203, badge:"Value Pick",     color:"Onyx Grey",     cardBg:"#0f1a2e", cardAccent:"#e1251b", display:"15.6\" FHD IPS 144Hz",        graphics:"RTX 3050 4GB",               battery:"7 hrs",  batteryNum:7,  weightLbs:5.07, os:"Windows 11 Home", ports:"1× USB-C, 2× USB-A, HDMI 1.4, RJ-45", wireless:"Wi-Fi 6, BT 5.1",  webcam:"720p HD",      military:"N/A",         fingerprint:"No"  },
+  { id:7,  name:"ThinkPad E14 Gen 5",          series:"ThinkPad",  type:"Business",  processor:"Intel Core i7-1355U",     processorBrand:"Intel", ram:16, storage:"512GB SSD", screen:14.0, price:899,  origPrice:1099, savings:200, rating:4.5, reviews:134, badge:"",              color:"Graphite Black",cardBg:"#141c2b", cardAccent:"#294E95", display:"14\" FHD IPS 300nits",        graphics:"Intel Iris Xe Graphics",     battery:"11 hrs", batteryNum:11, weightLbs:3.20, os:"Windows 11 Pro",  ports:"2× TB4, 2× USB-A, HDMI 2.0",         wireless:"Wi-Fi 6E, BT 5.3", webcam:"1080p FHD+IR", military:"MIL-STD-810H", fingerprint:"Yes" },
+  { id:8,  name:"Yoga 7i Gen 9 2-in-1",        series:"Yoga",      type:"2-in-1",    processor:"Intel Core Ultra 5 125H", processorBrand:"Intel", ram:16, storage:"512GB SSD", screen:16.0, price:999,  origPrice:1299, savings:300, rating:4.7, reviews:167, badge:"",              color:"Storm Grey",    cardBg:"#2a3040", cardAccent:"#5b8dd9", display:"16\" 2.5K IPS Touch 120Hz",   graphics:"Intel Arc Graphics",         battery:"14 hrs", batteryNum:14, weightLbs:4.18, os:"Windows 11 Home", ports:"2× TB4, 1× USB-A, HDMI 2.0",         wireless:"Wi-Fi 6E, BT 5.3", webcam:"1080p FHD+IR", military:"N/A",         fingerprint:"Yes" },
+  { id:9,  name:"Legion Slim 5 Gen 8",         series:"Legion",    type:"Gaming",    processor:"AMD Ryzen 7 7745HX",       processorBrand:"AMD",   ram:16, storage:"512GB SSD", screen:15.6, price:1099, origPrice:1399, savings:300, rating:4.8, reviews:221, badge:"",              color:"Misty Grey",    cardBg:"#1a0f2e", cardAccent:"#9c4dcc", display:"15.6\" FHD IPS 144Hz 350nits",graphics:"RTX 4060 8GB",               battery:"8 hrs",  batteryNum:8,  weightLbs:4.85, os:"Windows 11 Home", ports:"1× TB4, 2× USB-A, HDMI 2.1",         wireless:"Wi-Fi 6E, BT 5.3", webcam:"1080p FHD",    military:"N/A",         fingerprint:"No"  },
+  { id:10, name:"IdeaPad Flex 5 Gen 8",        series:"IdeaPad",   type:"2-in-1",    processor:"AMD Ryzen 5 7530U",        processorBrand:"AMD",   ram:8,  storage:"256GB SSD", screen:14.0, price:449,  origPrice:599,  savings:150, rating:4.3, reviews:278, badge:"Budget Pick",    color:"Abyss Blue",    cardBg:"#0f2040", cardAccent:"#1565c0", display:"14\" FHD IPS Touch 250nits",  graphics:"AMD Radeon Graphics",        battery:"10 hrs", batteryNum:10, weightLbs:3.64, os:"Windows 11 Home", ports:"1× USB-C, 2× USB-A, HDMI 1.4",        wireless:"Wi-Fi 5, BT 5.1",  webcam:"720p HD",      military:"N/A",         fingerprint:"Yes" },
+  { id:11, name:"ThinkPad L14 Gen 4",          series:"ThinkPad",  type:"Business",  processor:"AMD Ryzen 7 PRO 7730U",    processorBrand:"AMD",   ram:32, storage:"1TB SSD",   screen:14.0, price:1099, origPrice:1399, savings:300, rating:4.6, reviews:87,  badge:"",              color:"Thunder Black", cardBg:"#0d1520", cardAccent:"#294E95", display:"14\" FHD IPS 300nits",        graphics:"AMD Radeon Graphics",        battery:"13 hrs", batteryNum:13, weightLbs:3.42, os:"Windows 11 Pro",  ports:"2× TB4, 2× USB-A, HDMI 2.0, RJ-45",  wireless:"Wi-Fi 6E, BT 5.3", webcam:"1080p FHD+IR", military:"MIL-STD-810H", fingerprint:"Yes" },
+  { id:12, name:"Yoga 6 Gen 8",                series:"Yoga",      type:"2-in-1",    processor:"AMD Ryzen 7 7730U",        processorBrand:"AMD",   ram:16, storage:"512GB SSD", screen:13.3, price:849,  origPrice:999,  savings:150, rating:4.7, reviews:143, badge:"",              color:"Storm Grey",    cardBg:"#2e2030", cardAccent:"#9c27b0", display:"13.3\" FHD IPS Touch 300nits",graphics:"AMD Radeon Graphics",        battery:"14 hrs", batteryNum:14, weightLbs:3.09, os:"Windows 11 Home", ports:"2× USB-C, 1× USB-A, HDMI 2.0",        wireless:"Wi-Fi 6E, BT 5.3", webcam:"1080p FHD+IR", military:"N/A",         fingerprint:"Yes" }
+];
+
+// ── Spec rows definition ─────────────────────────────────────
+// { label, key, section, highlight: 'high'|'low'|'none', format }
+const SPEC_ROWS = [
+  // Pricing
+  { section: "Pricing & Value" },
+  { label: "Price",          key: "price",       highlight: "low",  format: p => `$${p.price.toLocaleString()}` },
+  { label: "Original Price", key: "origPrice",   highlight: "none", format: p => `<span style="text-decoration:line-through;color:var(--text-soft)">$${p.origPrice.toLocaleString()}</span>` },
+  { label: "You Save",       key: "savings",     highlight: "high", format: p => { const pct=Math.round(p.savings/p.origPrice*100); return `$${p.savings} (${pct}% off)`; } },
+  { label: "Rating",         key: "rating",      highlight: "high", format: p => `<span class="cmp-stars">${'★'.repeat(Math.floor(p.rating))}</span> ${p.rating} <span style="color:var(--text-soft);font-size:11px">(${p.reviews})</span>` },
+  // Performance
+  { section: "Performance" },
+  { label: "Processor",      key: "processor",   highlight: "none", format: p => p.processor },
+  { label: "Processor Brand",key: "processorBrand", highlight: "none", format: p => p.processorBrand },
+  { label: "RAM",            key: "ram",         highlight: "high", format: p => `${p.ram}GB` },
+  { label: "Storage",        key: "storage",     highlight: "none", format: p => p.storage },
+  { label: "Graphics",       key: "graphics",    highlight: "none", format: p => p.graphics },
+  // Display
+  { section: "Display" },
+  { label: "Display",        key: "display",     highlight: "none", format: p => p.display },
+  { label: "Screen Size",    key: "screen",      highlight: "none", format: p => `${p.screen}"` },
+  // Design
+  { section: "Design & Portability" },
+  { label: "Weight",         key: "weightLbs",   highlight: "low",  format: p => `${p.weightLbs} lbs` },
+  { label: "Color",          key: "color",       highlight: "none", format: p => p.color },
+  { label: "Type",           key: "type",        highlight: "none", format: p => p.type },
+  // Battery & OS
+  { section: "Battery & Software" },
+  { label: "Battery Life",   key: "batteryNum",  highlight: "high", format: p => p.battery },
+  { label: "Operating System",key:"os",          highlight: "none", format: p => p.os },
+  // Connectivity
+  { section: "Connectivity" },
+  { label: "Ports",          key: "ports",       highlight: "none", format: p => p.ports },
+  { label: "Wireless",       key: "wireless",    highlight: "none", format: p => p.wireless },
+  { label: "Webcam",         key: "webcam",      highlight: "none", format: p => p.webcam },
+  // Security
+  { section: "Security & Build" },
+  { label: "Fingerprint",    key: "fingerprint", highlight: "none", format: p => p.fingerprint === 'Yes' ? '<span style="color:var(--green);font-weight:700">✓ Yes</span>' : '<span style="color:var(--text-soft)">✗ No</span>' },
+  { label: "Military Grade", key: "military",    highlight: "none", format: p => p.military !== 'N/A' ? `<span style="color:var(--green);font-weight:700">✓ ${p.military}</span>` : '<span style="color:var(--text-soft)">—</span>' },
+];
+
+// ── Persist state ─────────────────────────────────────────────
+const COMPARE_KEY = 'lenovo_compare';
+const COMPARE_MAX = 4;
+
+function getCompare() { try { return JSON.parse(localStorage.getItem(COMPARE_KEY)) || []; } catch { return []; } }
+function saveCompare(ids) { localStorage.setItem(COMPARE_KEY, JSON.stringify(ids)); }
+
+// ── Cart helpers ─────────────────────────────────────────────
+const CART_KEY = 'lenovo_cart';
+function getCart() { try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; } }
+function saveCart(c) { localStorage.setItem(CART_KEY, JSON.stringify(c)); }
+function loadCartCount() {
+  const t = getCart().reduce((s,i)=>s+i.quantity,0);
+  const el = document.getElementById('cart-count');
+  if (el) el.textContent = t;
+}
+function addToCart(id) {
+  const p = PRODUCTS.find(x=>x.id===id);
+  if (!p) return;
+  const cart = getCart();
+  const ex = cart.find(i=>i.id===id);
+  if (ex) ex.quantity += 1; else cart.push({...p, quantity:1});
+  saveCart(cart); loadCartCount();
+  showToast(`${p.name} added to cart!`);
+}
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.classList.add('show'),10);
+  setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=>t.remove(),400); },2500);
+}
+function laptopSVG(accent, bg) {
+  return `<svg viewBox="0 0 220 145" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+    <rect x="18" y="8" width="184" height="112" rx="10" fill="${accent}" opacity="0.25"/>
+    <rect x="24" y="14" width="172" height="100" rx="7" fill="#0a0a1a" opacity="0.9"/>
+    <rect x="30" y="20" width="160" height="88" rx="4" fill="#111827" opacity="0.8"/>
+    <circle cx="110" cy="17" r="2.5" fill="${accent}" opacity="0.6"/>
+    <rect x="2" y="120" width="216" height="16" rx="5" fill="${accent}" opacity="0.3"/>
+    <text x="110" y="72" font-size="26" text-anchor="middle" fill="${accent}" opacity="0.35" font-family="monospace">⌨</text>
+  </svg>`;
+}
+
+// ── State: IDs currently in comparison ───────────────────────
+let compareIds = [];
+
+function removeFromCompare(id) {
+  compareIds = compareIds.filter(x => x !== id);
+  saveCompare(compareIds);
+  updateURL();
+  renderPage();
+}
+
+function addToCompare(id) {
+  if (compareIds.includes(id) || compareIds.length >= COMPARE_MAX) return;
+  compareIds.push(id);
+  saveCompare(compareIds);
+  updateURL();
+  closePicker();
+  renderPage();
+}
+
+function updateURL() {
+  const url = new URL(window.location);
+  if (compareIds.length) url.searchParams.set('ids', compareIds.join(','));
+  else url.searchParams.delete('ids');
+  window.history.replaceState({}, '', url);
+}
+
+// ── Picker ────────────────────────────────────────────────────
+function openPicker() {
+  const overlay = document.getElementById('picker-overlay');
+  const grid = document.getElementById('picker-grid');
+  const countLabel = document.getElementById('picker-count-label');
+  countLabel.textContent = `(${compareIds.length}/${COMPARE_MAX} selected)`;
+  grid.innerHTML = PRODUCTS.map(p => {
+    const isPicked = compareIds.includes(p.id);
+    const isFull = !isPicked && compareIds.length >= COMPARE_MAX;
+    return `<div class="picker-card ${isPicked?'picked':''} ${isFull?'disabled':''}" onclick="addToCompare(${p.id})">
+      <div style="font-size:24px;margin-bottom:6px">${laptopSVG(p.cardAccent)}</div>
+      <div class="picker-card-name">${p.name}</div>
+      <div class="picker-card-price">$${p.price.toLocaleString()}</div>
+      ${isPicked ? '<div style="color:var(--green);font-size:11px;margin-top:4px">✓ In comparison</div>' : ''}
+    </div>`;
+  }).join('');
+  overlay.classList.add('open');
+}
+function closePicker() { document.getElementById('picker-overlay').classList.remove('open'); }
+function closePickerOnOverlay(e) { if (e.target === document.getElementById('picker-overlay')) closePicker(); }
+
+// ── Find best/worst values for highlighting ───────────────────
+function getWinners(products, row) {
+  if (row.highlight === 'none' || products.length < 2) return { best: new Set(), worst: new Set() };
+  const vals = products.map(p => Number(p[row.key]));
+  if (vals.some(isNaN)) return { best: new Set(), worst: new Set() };
+  const bestVal = row.highlight === 'high' ? Math.max(...vals) : Math.min(...vals);
+  const worstVal = row.highlight === 'high' ? Math.min(...vals) : Math.max(...vals);
+  const best = new Set(products.filter((_,i) => vals[i] === bestVal).map(p => p.id));
+  const worst = worstVal !== bestVal
+    ? new Set(products.filter((_,i) => vals[i] === worstVal).map(p => p.id))
+    : new Set();
+  return { best, worst };
+}
+
+// ── Render ────────────────────────────────────────────────────
+function renderPage() {
+  const page = document.getElementById('cmp-page');
+  const products = compareIds.map(id => PRODUCTS.find(p=>p.id===id)).filter(Boolean);
+
+  if (products.length === 0) {
+    page.innerHTML = `
+      <div class="cmp-empty">
+        <div class="cmp-empty-icon">📊</div>
+        <h2>No laptops selected for comparison</h2>
+        <p>Browse laptops and click "⊕ Compare" to add up to ${COMPARE_MAX} laptops to your comparison.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <a href="laptops.html" class="btn btn-primary" style="padding:12px 24px">Browse Laptops</a>
+          <button class="btn btn-ghost" onclick="openPicker()" style="padding:12px 24px">Pick Laptops Here</button>
+        </div>
+      </div>`;
+    return;
+  }
+
+  // Build product column headers
+  const productCols = products.map(p => `
+    <td class="col-product">
+      <div class="cmp-product-header">
+        <button class="cmp-remove-btn" onclick="removeFromCompare(${p.id})" title="Remove ${p.name}">×</button>
+        <div class="cmp-prod-img" style="background:linear-gradient(135deg,${p.cardBg} 0%,${p.cardAccent}55 100%)">
+          ${laptopSVG(p.cardAccent)}
+        </div>
+        <div><span class="cmp-prod-series" style="background:${p.cardAccent}">${p.series}</span></div>
+        <div class="cmp-prod-name">${p.name}</div>
+        <div class="cmp-prod-price">$${p.price.toLocaleString()}</div>
+        <div class="cmp-prod-orig">$${p.origPrice.toLocaleString()}</div>
+        <div class="cmp-prod-actions">
+          <button class="btn btn-primary" onclick="addToCart(${p.id})">Add to Cart</button>
+          <a href="product.html?id=${p.id}" class="btn btn-ghost">Full Details</a>
+        </div>
+      </div>
+    </td>`).join('');
+
+  // Add slot (if room)
+  const addSlot = products.length < COMPARE_MAX ? `
+    <td class="col-product">
+      <div class="cmp-add-slot">
+        <button class="cmp-add-btn" onclick="openPicker()">
+          <span class="plus">+</span>
+          Add laptop
+        </button>
+      </div>
+    </td>` : '';
+
+  // Empty cols for alignment when < 4
+  const emptyCount = Math.max(0, COMPARE_MAX - products.length - (products.length < COMPARE_MAX ? 1 : 0));
+  const emptyCols = '<td class="col-product"></td>'.repeat(emptyCount);
+
+  // Build spec rows
+  let specRowsHTML = '';
+  for (const row of SPEC_ROWS) {
+    if (row.section) {
+      specRowsHTML += `<tr class="cmp-section-head">
+        <td colspan="${COMPARE_MAX + 1}">${row.section}</td>
+      </tr>`;
+      continue;
+    }
+    const { best, worst } = getWinners(products, row);
+    const cells = products.map(p => {
+      const cls = best.has(p.id) ? 'cmp-best' : worst.has(p.id) ? 'cmp-worst' : '';
+      return `<td class="${cls}">${row.format(p)}</td>`;
+    }).join('');
+    const emptyDataCols = '<td></td>'.repeat(COMPARE_MAX - products.length);
+    specRowsHTML += `<tr class="cmp-row">
+      <td class="row-label">${row.label}</td>
+      ${cells}
+      ${emptyDataCols}
+    </tr>`;
+  }
+
+  page.innerHTML = `
+    <div class="cmp-controls">
+      <h1>Compare Laptops <span style="font-size:16px;font-weight:400;color:var(--text-soft)">(${products.length} selected)</span></h1>
+      <div class="cmp-controls-right">
+        ${products.length < COMPARE_MAX ? `<button class="btn btn-ghost" onclick="openPicker()">+ Add Laptop</button>` : ''}
+        <a href="laptops.html" class="btn btn-ghost">← Back to Laptops</a>
+      </div>
+    </div>
+
+    <div class="cmp-legend">
+      <span><span class="legend-dot" style="background:var(--green)"></span>Best in category</span>
+      <span><span class="legend-dot" style="background:var(--text-soft)"></span>Lowest in category</span>
+      <span style="font-style:italic;font-size:11px">Highlighting applies to numeric specs with 2+ laptops</span>
+    </div>
+
+    <div class="cmp-table-wrap">
+      <table class="cmp-table" aria-label="Laptop comparison table">
+        <colgroup>
+          <col class="col-label">
+          ${Array(COMPARE_MAX).fill('<col class="col-product">').join('')}
+        </colgroup>
+        <thead>
+          <tr class="cmp-header-row">
+            <td class="col-label-cell">
+              <span class="cmp-count-label">Comparing ${products.length} of ${COMPARE_MAX}</span>
+            </td>
+            ${productCols}
+            ${addSlot}
+            ${emptyCols}
+          </tr>
+        </thead>
+        <tbody>
+          ${specRowsHTML}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+// ── Init ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Search toggle
+  const searchBtn = document.getElementById('search-toggle');
+  const searchBox = document.getElementById('search-box');
+  if (searchBtn && searchBox) searchBtn.addEventListener('click', () => searchBox.classList.toggle('open'));
+
+  loadCartCount();
+
+  // Read IDs from URL or localStorage
+  const params = new URLSearchParams(window.location.search);
+  const urlIds = params.get('ids');
+  if (urlIds) {
+    compareIds = urlIds.split(',').map(Number).filter(id => PRODUCTS.find(p=>p.id===id)).slice(0, COMPARE_MAX);
+    saveCompare(compareIds);
+  } else {
+    compareIds = (getCompare() || []).slice(0, COMPARE_MAX);
+  }
+
+  renderPage();
+});
+</script>
+</body>
+</html>

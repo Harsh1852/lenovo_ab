@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop Laptops & 2-in-1s | Lenovo US — Variant B (Top Bar Filter)</title>
+  <meta name="description" content="Find top laptops or 2-in-1s for work, school, gaming & more. FREE SHIPPING on orders $50+." />
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Variant B indicator (for A/B tracking) -->
+  <meta name="ab-variant" content="B-topbar-filter" />
+</head>
+<body>
+
+<!-- ── Top Banner ──────────────────────────────────────────── -->
+<div class="top-banner">
+  <span>🚚 Free Standard Shipping on orders $50+</span>
+  <span>🎓 <a href="#">Student &amp; Teacher Discounts</a></span>
+  <span>📞 1-855-2-LENOVO</span>
+</div>
+
+<!-- ── Header ──────────────────────────────────────────────── -->
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">LENO<span>V</span>O</a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="laptops.html" class="active">Laptops &amp; 2-in-1s</a>
+      <a href="#">Desktops</a>
+      <a href="#">Tablets</a>
+      <a href="#">Monitors</a>
+      <a href="#">Gaming</a>
+      <a href="#">Deals</a>
+      <a href="compare.html" style="color:var(--blue);font-weight:700">⊕ Compare</a>
+    </nav>
+
+    <div class="header-right">
+      <div id="search-box">
+        <input type="text" placeholder="Search laptops…" aria-label="Search" />
+        <button aria-label="Submit search">🔍</button>
+      </div>
+      <button class="icon-btn" id="search-toggle" aria-label="Toggle search">🔍</button>
+      <button class="icon-btn" aria-label="Account">👤</button>
+      <a href="cart.html" class="icon-btn" aria-label="Cart" style="position:relative;text-decoration:none">
+        🛒 <span class="cart-count" id="cart-count">0</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ── Breadcrumb ───────────────────────────────────────────── -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="container">
+    <ol>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html">PCs &amp; Laptops</a></li>
+      <li aria-current="page">Laptops &amp; 2-in-1s</li>
+    </ol>
+  </div>
+</nav>
+
+<!-- ── Page Hero ────────────────────────────────────────────── -->
+<div class="page-hero">
+  <div class="container">
+    <h1>Shop Laptops &amp; 2-in-1s</h1>
+    <p>Find top laptops or 2-in-1s for work, school, gaming &amp; more</p>
+    <div class="hero-meta">
+      <span class="badge-pill">✓ Free Shipping</span>
+      <span class="badge-pill">✓ 30-Day Returns</span>
+      <span class="badge-pill">✓ Price Match Guarantee</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     VARIANT B KEY FEATURE: STICKY TOP FILTER BAR
+     ════════════════════════════════════════════════════════════ -->
+<div class="filter-bar-section" aria-label="Filter and sort products">
+
+  <!-- Row 1: Filter chips + Sort -->
+  <div class="filter-bar-inner">
+    <!-- Chips-only container — JS writes here without touching Sort -->
+    <div id="filter-bar" class="filter-chips-row">
+      <!-- Chips injected by buildFilterBar() -->
+    </div>
+
+    <!-- Sort (static — lives outside #filter-bar so it is never overwritten) -->
+    <div class="filter-bar-sort">
+      <label for="sort-select">Sort:</label>
+      <select id="sort-select" aria-label="Sort results">
+        <option value="relevance">Relevance</option>
+        <option value="price-asc">Price ↑</option>
+        <option value="price-desc">Price ↓</option>
+        <option value="rating">Rating</option>
+        <option value="savings">Savings</option>
+        <option value="newest">Newest</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Row 2: Active filter tags (shown when filters active) -->
+  <div id="active-tags-row" role="list" aria-label="Active filters"></div>
+
+</div>
+<!-- END TOP FILTER BAR ───────────────────────────────────────── -->
+
+<!-- ── Main Content ─────────────────────────────────────────── -->
+<main>
+  <div class="container">
+    <div class="results-layout">
+
+      <!-- Results topbar: count only (sort is in filter bar above) -->
+      <div class="results-topbar">
+        <p class="results-count-text">
+          Showing <strong id="results-count">12</strong> laptops
+        </p>
+        <p style="font-size:13px; color:#767676">
+          Variant B — Top Bar Filter
+        </p>
+      </div>
+
+      <!-- Product Grid (full width — no sidebar) -->
+      <div class="products-grid" id="products-grid" aria-label="Laptop results">
+        <!-- Rendered by main.js -->
+      </div>
+
+    </div><!-- /results-layout -->
+  </div><!-- /container -->
+</main>
+
+<!-- ── Footer ───────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">LENO<span style="color:#E1251B">V</span>O</div>
+        <p>Smarter technology for all. Laptops, PCs, tablets, and smart devices designed for everyone.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Twitter">𝕏</a>
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="YouTube">▶</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="laptops.html">Laptops &amp; 2-in-1s</a></li>
+          <li><a href="#">Desktops &amp; AiOs</a></li>
+          <li><a href="#">Tablets &amp; Pads</a></li>
+          <li><a href="#">Monitors</a></li>
+          <li><a href="#">Accessories</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Driver Downloads</a></li>
+          <li><a href="#">Warranty Lookup</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Lenovo</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Newsroom</a></li>
+          <li><a href="#">Sustainability</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Lenovo. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Cookie Settings</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
