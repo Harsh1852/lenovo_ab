@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/variant_a",
+      "destination": "/variant_a/index.html"
+    },
+    {
+      "source": "/variant_b",
+      "destination": "/variant_b/index.html"
+    }
+  ]
+}
